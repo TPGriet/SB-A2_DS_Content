@@ -1,1 +1,2686 @@
+1. Creating and Traversing a Linked LIst.
+TEST CASES:
+-------------------------
+case=t1
+input=3                                                                               
+25                                                                              
+35                                                                              
+45                                                                              
+output=                                                                                
+Data in the list                                                                
+25->35->45->
 
+case=t2
+input=5
+21
+50
+63
+19
+32
+output=
+Data in the list
+21->50->63->19->32->
+
+
+case=t2
+input=1
+26
+output=
+Data in the list
+26->
+
+PROGRAM:
+--------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Structure of a node */
+struct node {
+    int data;          // Data 
+    struct node *next; // Address 
+}*head;
+
+
+/* 
+ * Functions to create and display list
+ */
+void createList(int n);
+void traverseList();
+
+
+int main()
+{
+    int n;
+
+    //printf("Enter the total number of nodes: ");
+    scanf("%d", &n);
+
+    createList(n);
+
+    printf("\nData in the list \n");
+    traverseList();
+
+    return 0;
+}
+
+/*
+ * Create a list of n nodes
+ */
+void createList(int n)
+{
+    struct node *newNode, *temp;
+    int data, i;
+
+    head = (struct node *)malloc(sizeof(struct node));
+
+    // Terminate if memory not allocated
+    if(head == NULL)
+    {
+        printf("Unable to allocate memory.");
+        exit(0);
+    }
+
+
+    scanf("%d", &data);
+
+    head->data = data; 
+    head->next = NULL; 
+
+    temp = head;
+    for(i=2; i<=n; i++)
+    {
+        newNode = (struct node *)malloc(sizeof(struct node));
+
+        /* If memory is not allocated for newNode */
+        if(newNode == NULL)
+        {
+            printf("Unable to allocate memory.");
+            break;
+        }
+
+        //printf("Enter the data of node %d: ", i);
+        scanf("%d", &data);
+        // Creating the node
+        newNode->data = data; 
+        newNode->next = NULL;  
+
+      // Linking the node
+        temp->next = newNode; 
+        temp = temp->next;  
+    }
+}
+
+
+/*
+ * Display entire list
+ */
+void traverseList()
+{
+    struct node *temp;
+
+    // Return if list is empty 
+    if(head == NULL)
+    {
+        printf("List is empty.");
+        return;
+    }
+    
+    temp = head;
+    while(temp != NULL)
+    {
+        printf("%d->", temp->data); // Print data of current node
+        temp = temp->next;                 // Move to next node
+    }
+}
+
+2. Inserting an element at given position  position  in LL
+TEST CASES:
+-------------------------------
+case=t1
+input=3                                                                               
+25                                                                              
+26                                                                              
+27  
+38                                                                              
+3
+output=
+SINGLY LINKED LIST CREATED SUCCESSFULLY                                         
+Data in the list                                                                
+25->26->27->                                                                     
+DATA INSERTED SUCCESSFULLY                                                      
+Data in the list                                                                
+25->26->38->27->                                           
+
+case=t2
+input=2                                                                               
+32
+39
+40
+1
+output=
+SINGLY LINKED LIST CREATED SUCCESSFULLY                                         
+Data in the list                                                                
+32->39->                                                                       
+DATA INSERTED SUCCESSFULLY                                                      
+Data in the list                                                                
+40->32->39-> 
+
+PROGRAM:
+---------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+
+/* Structure of a node */
+struct node {
+    int data;          // Data 
+    struct node *next; // Address 
+}*head;
+
+
+void createList(int n);
+void insertNodeAtPosition(int data, int position);
+void displayList();
+
+
+int main()
+{
+    int n, data, position;
+
+    /*
+     * Create a singly linked list of n nodes
+     */
+//    printf("Enter the total number of nodes: ");
+    scanf("%d", &n);
+    createList(n);
+
+    printf("\nData in the list \n");
+    displayList();
+
+    /*
+     * Insert data at middle of the singly linked list
+     */
+  //  printf("nEnter data to insert at middle of the list: ");
+    scanf("%d", &data);
+    //printf("Enter the position to insert new node: " );
+    scanf("%d", &position);
+    insertNodeAtPosition(data, position);
+
+    printf("\nData in the list \n");
+    displayList();
+
+    return 0;
+}
+
+
+
+/*
+ * Create a list of n nodes
+ */
+void createList(int n)
+{
+    struct node *newNode, *temp;
+    int data, i;
+
+    head = (struct node *)malloc(sizeof(struct node));
+
+    /*
+     * If unable to allocate memory for head node
+     */
+    if(head == NULL)
+    {
+        printf("Unable to allocate memory.");
+    }
+    else
+    {
+        /*
+         * Input data of node from the user
+         */
+      //  printf("Enter the data of node 1: ");
+        scanf("%d", &data);
+
+        head->data = data; // Link the data field with data
+        head->next = NULL; // Link the address field to NULL
+
+        temp = head;
+
+        /*
+         * Creates n nodes and adds to linked list
+         */
+        for(i=2; i<=n; i++)
+        {
+            newNode = (struct node *)malloc(sizeof(struct node));
+
+            /* If memory is not allocated for newNode */
+            if(newNode == NULL)
+            {
+                printf("Unable to allocate memory.");
+                break;
+            }
+            else
+            {
+              //  printf("Enter the data of node %d: ", i);
+                scanf("%d", &data);
+
+                newNode->data = data; // Link the data field of newNode with data
+                newNode->next = NULL; // Link the address field of newNode with NULL
+
+                temp->next = newNode; // Link previous node i.e. temp to the newNode
+                temp = temp->next;
+            }
+        }
+
+        printf("SINGLY LINKED LIST CREATED SUCCESSFULLY\n");
+    }
+}
+
+
+
+/*
+ * Creates a new node and inserts at middle of the linked list.
+ */
+void insertNodeAtPosition(int data, int position)
+{
+    int i;
+    struct node *newNode, *temp;
+
+    newNode = (struct node*)malloc(sizeof(struct node));
+
+    if(newNode == NULL)
+    {
+        printf("Unable to allocate memory.");
+    }
+    else
+    {
+        newNode->data = data; // Link data part
+        newNode->next = NULL;
+
+        temp = head;
+
+        /* 
+         * Traverse to the n-1 position 
+         */
+         if(position<1)
+         {
+             printf("Invalid Position\n");
+             return;
+         }     
+         if(position==1)
+         {
+             head=newNode;
+             newNode->next=temp;
+         }
+         else
+         {
+           for(i=2; i<=position-1; i++)
+           {
+             temp = temp->next;
+
+              if(temp == NULL)
+                break;
+           }
+         
+           if(temp != NULL)
+           {
+            /* Link address part of new node */
+            newNode->next = temp->next; 
+
+            /* Link address part of n-1 node */
+               temp->next = newNode;
+
+              printf("DATA INSERTED SUCCESSFULLY\n");
+           }
+           else
+           {
+            printf("UNABLE TO INSERT DATA AT THE GIVEN POSITION\n");
+           }
+         }   
+    }
+}
+
+
+/*
+ * Display entire list
+ */
+void displayList()
+{
+    struct node *temp;
+
+    /*
+     * If the list is empty i.e. head = NULL
+     */
+    if(head == NULL)
+    {
+        printf("List is empty.");
+    }
+    else
+    {
+        temp = head;
+        while(temp != NULL)
+        {
+            printf("%d->", temp->data); // Print data of current node
+            temp = temp->next;                 // Move to next node
+        }
+    }
+}
+
+3. Deleting an element at given position  position  in LL
+
+TEST CASES:
+--------------------
+case=t1
+input=
+4                                                                               
+12                                                                              
+18                                                                              
+26                                                                              
+12
+12
+output=                                                                                
+Data in list before deletion                                                    
+12->18->26->12->                                                                 
+2 elements deleted with key 12.                                                 
+Data in list after deletion                                                     
+18->26->
+
+case=t2
+input=
+5
+25
+52                                                                              
+48                                                                              
+62                                                                              
+51
+48
+output=                                                                                
+Data in list before deletion                                                    
+25->52->48->62->51->                                                                 
+1 elements deleted with key 48.                                                 
+Data in list after deletion                                                     
+25->52->62->51->
+
+PROGRAM:
+-------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+/* Node structure */
+struct node
+{
+    int data;          // Data
+    struct node *next; // Address
+} * head;
+
+
+/* Function declaration */
+void createList(int n);
+int  deleteAllByKey(int key);
+void displayList();
+
+
+int main()
+{
+    int n, key, totalDeleted;
+
+    // Input node count to create
+//    printf("Enter number of node to create: ");
+    scanf("%d", &n);
+
+    createList(n);
+
+    // Display list
+    printf("\nData in list before deletion\n");
+    displayList();
+
+  //  printf("\nEnter element to delete with key: ");
+    scanf("%d", &key);
+
+
+    totalDeleted = deleteAllByKey(key);
+    printf("%d elements deleted with key %d", totalDeleted, key);
+
+
+    // Print final list
+    printf("\nData in list after deletion\n");
+    displayList();
+
+    return 0;
+}
+
+/**
+ * Create a list of n nodes
+ */
+void createList(int n)
+{
+    struct node *newNode, *temp;
+    int data, i;
+
+    head = malloc(sizeof(struct node));
+
+    /*
+     * Unable to allocate memory, hence exit from app.
+     */
+    if (head == NULL)
+    {
+        printf("Unable to allocate memory. Exiting from app.");
+        exit(0);
+    }
+    
+
+    /* Input head node data from user */
+    //printf("Enter data of node 1: ");
+    scanf("%d", &data);
+
+    head->data = data; // Link data field with data
+    head->next = NULL; // Link address field to NULL
+
+    temp = head;
+
+    /*
+     * Create n nodes and add to the list
+     */
+    for (i = 2; i <= n; i++)
+    {
+        newNode = malloc(sizeof(struct node));
+
+        /* If memory is not allocated for newNode */
+        if (newNode == NULL)
+        {
+            printf("Unable to allocate memory. Exiting from app.");
+            exit(0);
+        }
+
+      //  printf("Enter data of node %d: ", i);
+        scanf("%d", &data);
+
+        newNode->data = data; // Link data field of newNode
+        newNode->next = NULL; // The newNode should point to nothing
+
+        temp->next = newNode; // Link previous node i.e. temp to the newNode
+        temp = temp->next;
+    }
+    
+}
+
+
+/**
+ * Display entire list
+ */
+void displayList()
+{
+    struct node *temp;
+
+    /*
+     * If the list is empty i.e. head = NULL,
+     * dont perform any action and return.
+     */
+    if (head == NULL)
+    {
+        printf("List is empty.\n");
+        return;
+    }
+    
+    temp = head;
+    while (temp != NULL)
+    {
+        printf("%d-> ", temp->data);     // Print data of current node
+        temp = temp->next;              // Move to next node
+    }
+    printf("\n");
+}
+
+
+/**
+ * Delete all nodes having data as given key.
+ */
+int deleteAllByKey(int key)
+{
+    int totalDeleted = 0;
+    struct node *prev, *cur;
+
+    /* Check if head node contains key */
+    while (head != NULL && head->data == key)
+    {
+        // Get reference of head node
+        prev = head;
+
+        // Adjust head node link
+        head = head->next;
+
+        // Delete prev since it contains reference to head node
+        free(prev);
+
+        totalDeleted++;
+    }
+
+    prev = NULL;
+    cur  = head;
+
+    /* For each node in the list */
+    while (cur != NULL)
+    {
+        // Current node contains key
+        if (cur->data == key)
+        {
+            // Adjust links for previous node
+            if (prev != NULL) 
+            {
+                prev->next = cur->next;
+            }
+
+            // Delete current node
+            free(cur);
+
+            cur = prev->next;
+
+            totalDeleted++;
+        } 
+        else
+        {
+            prev = cur;
+            cur = cur->next;
+        }        
+
+    }
+
+    return totalDeleted;
+}
+
+4. Write a c program to remove consecutive duplicates from a given linked list.
+Use menu drive program as given below:
+1. Insert    2.Display Original List    3. List after removing duplicates    4.Exit
+
+Example test case:
+-------------------------
+case=t1
+input=1
+2
+1
+3
+1
+4
+1
+4
+1
+4
+1
+5
+1
+6
+2
+3
+4
+output=
+linked list elements are:
+2->3->4->4->4->5->6->
+List after removing duplicates:
+linked list elements are:
+2->3->4->5->6->
+
+case=t2
+input=1
+4
+1
+5
+1
+4
+1
+5
+1
+4
+2
+3
+4
+output=
+linked list elements are:
+4->5->4->5->4->
+List after removing duplicates:
+linked list elements are:
+4->5->4->5->4->
+
+case=t3
+fail message="after removing duplicates only one element is left"
+input=1
+2
+1
+2
+1
+2
+1
+2
+1
+2
+2
+3
+4
+output=
+linked list elements are:
+2->2->2->2->2->
+List after removing duplicates:
+linked list elements are:
+2->
+
+
+case=t4
+input=3 4
+output=
+Nothing to Remove. List is empty
+
+
+case=t5
+input=2 4
+output=
+linked list is empty
+
+PROGRAM:
+-------------------
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node 
+{
+    int data;
+    struct Node* next;
+};
+struct Node *head=NULL;
+
+void display(struct Node* head) 
+{
+    if(head==NULL)
+    {
+        printf("linked list is empty\n");
+        exit(0);
+    }
+    printf("linked list elements are:\n");
+    while(head) 
+    {
+        printf("%d->", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+
+void insert(int data) 
+{
+    struct Node* node = (struct Node*) malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    if (head == NULL)
+    {
+        head = node;
+    } 
+    else 
+    {
+        struct Node* temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = node;
+    }
+}
+
+void removeduplicates() 
+{
+    if (head == NULL) 
+    {
+      printf("Nothing to Remove. List is empty\n");
+      exit(0);
+    }
+    struct Node *cur1 = head, *cur2;
+    printf("List after removing duplicates:\n");
+    while (cur1->next!= NULL)
+    {
+        if (cur1->data == cur1->next->data)
+        {
+            cur2 = cur1->next->next;
+            free(cur1->next);
+            cur1->next = cur2;
+        } 
+        else
+        {
+            cur1 = cur1->next;
+        }
+    }
+}
+
+
+int main()
+{
+    int choice;
+    int data, k;
+
+    while(1)
+    {
+        scanf("%d", &choice);
+        switch (choice) 
+        {
+            case 1:
+                scanf("%d", &data);
+                insert(data);
+                break;
+            case 2: display(head);
+                break;
+            case 3:
+                removeduplicates();
+                display(head);
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("Invalid choice!!\n");
+        }
+    }
+
+    return 0;
+}
+
+
+5. Write a c program to add individual digits of 2 given lists (A & B are 2 lists). (addition two be done from 0th position of both lists)
+  While adding if sum is greater than 10, add a carry 1 to the next subsequent sum of list elements.
+  After adding all the elements, if there is still a carry left, create a new node and append to the final list.
+  
+Use menu drive program as given below:
+1. Insert    2.List 1 elements    3. List 2 elements    4. Add 2 Lists    5. Exit.
+
+Constraint: list elements should be single digit between: 0 to 9. (for example: 25 is invalid data)
+
+Input Format: in the test case given below, 1 indicates insert operaton, A indicates list 1, B indicates list 2.
+User need to enter 1 for insert, then A or B to indicate in which list element need to be inserted, then data value.
+
+Example test case:
+---------------------------
+case=t1
+input=
+1 A 4
+1 A 5
+1 B 5
+1 A 7
+1 B 6
+1 B 7
+2
+3
+4
+5
+output=
+List 1 elements are:
+4->5->7->
+List 2 elements are:
+5->6->7->
+Lists are added successfully
+9->1->5->1->
+
+case=t2
+fail message="hidden test case"
+input=
+1 A 2
+1 A 3
+1 A 4
+1 A 6
+1 B 5
+1 B 3
+1 B 6
+2
+3
+4
+5
+output=
+List 1 elements are:
+2->3->4->6->
+List 2 elements are:
+5->3->6->
+Lists are added successfully
+7->6->0->7->
+
+case=t3
+input=
+1 A 5                                                                           
+1 B 5                                                                           
+1 A 6                                                                           
+1 B 7                                                                           
+1 A 8                                                                           
+1 B 9 
+2
+3
+4
+5
+output=
+List 1 elements are:
+5->6->8->
+List 2 elements are:
+5->7->9->
+Lists are added successfully
+0->4->8->1->
+
+
+case=t4
+input=
+1
+A
+2
+1
+B
+3
+1
+A
+5
+1
+B
+6
+2
+3
+4
+5
+output=
+List 1 elements are:
+2->5->
+List 2 elements are:
+3->6->
+Lists are added successfully
+5->1->1->
+
+PROGRAM:
+---------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node 
+{
+    int data;
+    struct Node* next;
+};
+struct Node* newnode(int data) 
+{
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    return node;
+}
+void display(struct Node* head) 
+{
+    while(head) 
+    {
+        printf("%d->", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+
+void insert(struct Node** head, int data) 
+{
+    struct Node* node = (struct Node*) malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    if (*head == NULL)
+    {
+        *head = node;
+    } 
+    else 
+    {
+        struct Node* temp = *head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = node;
+    }
+}
+struct Node* addlists(struct Node* list1, struct Node* list2)
+{
+    struct Node* res = NULL;
+    struct Node* temp, * prev = NULL;
+    int carry = 0, sum;
+
+    while (list1 != NULL || list2 != NULL) 
+    {
+        sum = carry + (list1 ? list1->data : 0) + (list2 ? list2->data : 0);
+        carry = (sum >= 10) ? 1 : 0;
+        sum = sum % 10;
+        temp = newnode(sum);
+
+        if (res == NULL)
+            res = temp;
+        else
+            prev->next = temp;
+
+        prev = temp;
+
+        if (list1)
+        list1 = list1->next;
+        if (list2)
+        list2 = list2->next;
+    }
+    if (carry > 0)
+        temp->next = newnode(carry);
+
+    return res;
+}
+
+int main()
+{
+    struct Node* list1 = NULL;
+    struct Node* list2 = NULL;
+    struct Node* result = NULL;
+    char ch;
+    int choice;
+    int data;
+
+    while(1)
+    {
+        scanf("%d", &choice);
+        switch (choice) 
+        {
+            case 1:
+                scanf(" %c",&ch);   //note space before %c which is needed to remove newline character while entering data
+                scanf("%d", &data);
+                if(ch=='A')
+                insert(&list1, data);
+                else if(ch=='B')
+                insert(&list2,data);
+                else
+                printf("Enter valid choice A or B");
+                break;
+            case 2:
+                printf("List 1 elements are:\n");
+                display(list1);
+                break;
+            case 3:
+                printf("List 2 elements are:\n");
+                display(list2);
+                break;
+            case 4:
+                result = addlists(list1, list2);
+                printf("Lists are added successfully\n");
+                    display(result);
+                break;
+            case 5:
+                exit(0);
+            default:
+                printf("Invalid choice!!\n");
+        }
+    }
+
+    return 0;
+}
+
+6. *Write a c program Swap Kth Node from beginning and end of the Linked list.
+
+Use menu drive program as given below:
+1. Insert    2.Display Original List    3. Swapping Kth Node    4.Exit
+
+
+Example test case:
+------------------------
+case=t1
+input=
+1
+45
+1
+78
+1
+90
+2
+1
+78
+1
+234
+1
+567
+2
+3
+4
+4
+output=Linked list elements are:
+45->78->90->
+Linked list elements are:
+45->78->90->78->234->567->
+List after swapping Kth node from beginning and end:
+45->78->78->90->234->567->
+
+case=t2
+fail message="Hidden case"
+input=1
+28
+1
+3
+1
+5
+2
+3
+2
+4
+output=Linked list elements are:
+28->3->5->
+List after swapping Kth node from beginning and end:
+28->3->5->
+
+
+case=t3
+input=1
+28
+1
+8
+1
+10
+2
+3
+1
+4
+output=Linked list elements are:
+28->8->10->
+List after swapping Kth node from beginning and end:
+10->8->28->
+
+case=t4
+fail message="check for invalid choice"
+input=25 4
+output=Invalid choice!!
+
+
+case=t5
+input=1
+2
+1
+5
+12
+1
+34
+1
+78
+2
+1
+789
+2
+3
+2
+4
+output=Invalid choice
+Linked list elements are:
+2->5->34->78->
+Linked list elements are:
+2->5->34->78->789->
+List after swapping Kth node from beginning and end:
+2->78->34->5->789->
+
+PROGRAM:
+-------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node 
+{
+    int data;
+    struct Node* next;
+};
+struct Node* list = NULL;
+
+void display(struct Node *head)
+{
+while(head!=NULL)
+{
+   printf("%d->",head->data);
+    head=head->next;
+}
+printf("\n");
+}
+
+
+void insert(int data) 
+{
+    struct Node* node = (struct Node*) malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    if (list == NULL)
+    {
+        list = node;
+    } 
+    else 
+    {
+        struct Node* temp = list;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = node;
+    }
+}
+
+
+void swapKthnode(int k) 
+{
+    if (list == NULL)
+    return;    
+    int n = 0;
+    struct Node *temp = list;
+    while (temp) 
+    {
+        n++;
+        temp = temp->next;
+    }
+
+    if (k > n)
+    return;
+    
+    if (2 * k - 1 == n)
+    return;
+    
+    struct Node *a = list, *b = list;
+    for (int i = 1; i < k; i++)
+        a = a->next;
+    for (int i = 1; i < n - k + 1; i++)
+        b = b->next;
+
+    int t = a->data;
+    a->data = b->data;
+    b->data = t;
+}
+
+int main()
+{
+    
+    int choice;
+    int data, k;
+
+    while(1)
+    {
+        scanf("%d", &choice);
+
+        switch (choice) 
+        {
+            case 1:
+                scanf("%d", &data);
+                insert(data);
+                break;
+            case 2: printf("Linked list elements are:\n");
+                display(list);
+                break;
+            case 3:
+                scanf("%d", &k);
+                swapKthnode(k);
+                printf("List after swapping Kth node from beginning and end:\n");
+                display(list);
+                break;
+            case 4:
+                exit(0);
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+
+    return 0;
+}
+
+
+7. Write A c program to implement following linked list menu operations.
+
+1. Insert   2. Pair with Sum   3.Delete From last position   4.Display   5.Reverse List   6.Exit
+
+Sample test case:
+-------------------
+case=t1
+input=1 2 1 3 1 4 1 5 1 6 4 5 
+2 7
+2
+9
+3
+4
+5
+6
+output=
+Linked list elements are:
+2->3->4->5->6->
+Reversed Linked list is:
+6->5->4->3->2->
+(2,5) (3,4) Pairs with sum 7 
+(3,6) (4,5) Pairs with sum 9 
+Deleted node is: 6
+Linked list elements are:
+2->3->4->5->
+
+Reversed Linked list is:
+5->4->3->2->
+
+case=t2
+input=1
+2
+1
+5
+1
+4
+1
+3
+1
+7
+1
+2
+4
+5
+2
+9
+3
+4
+2
+9
+6
+output=
+Linked list elements are:
+2->5->4->3->7->2->
+Reversed Linked list is:
+2->7->3->4->5->2->
+(2,7) (5,4) (7,2) Pairs with sum 9:
+Deleted node is: 2
+Linked list elements are:
+2->5->4->3->7->
+(2,7) (5,4) Pairs with sum 9
+
+case=t3
+fail message="oops hidden test case"
+input=1
+12
+1
+14
+1
+16
+1
+3
+1
+4
+1
+5
+1
+6
+4
+5
+2
+12
+2
+8
+3
+4
+6
+output=
+Linked list elements are:
+12->14->16->3->4->5->6->
+Reversed Linked list is:
+6->5->4->3->16->14->12->
+No pair with given sum 12
+(3,5) Pairs with sum 8 
+Deleted node is: 6
+Linked list elements are:
+12->14->16->3->4->5->
+
+case=t4
+input=56 6
+output=
+Invalid choice!!
+
+PROGRAM:
+-------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node* next;
+};
+ struct Node* head = NULL;
+ 
+void insert(int data) 
+{
+    struct Node* node = (struct Node*) malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    if(head == NULL)
+    {
+        head = node;
+    } 
+    else 
+    {
+        struct Node* temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = node;
+    }
+}
+
+int sumpair(int sum) 
+{
+    struct Node* first = head;
+    struct Node* second = NULL;
+    int flag = 0;
+
+    while (first != NULL && first->next != NULL)
+    {
+        second = first->next;
+        while (second != NULL) 
+        {
+            if ((first->data + second->data) == sum) 
+            {
+                printf("(%d,%d) ", first->data, second->data);
+                flag = 1;
+            }
+            second = second->next;
+        }
+
+        first = first->next;
+    }
+
+   return flag;
+}
+
+int deletelastnode()
+{
+    int ele;
+    struct Node *last, *prev;
+    if(head == NULL)
+    {
+        printf("List is empty.");
+    }
+    else
+    {
+        last = head;
+        prev = head;
+        while(last->next != NULL)
+        {
+            prev = last;
+            last = last->next;
+        }
+        if(last == head)
+        {
+            head = NULL;
+        }
+        else
+        {
+            prev->next = NULL;
+        }
+         ele=last->data;
+        free(last);
+    }
+    return ele;
+}
+
+
+void display()
+{
+struct Node *x;
+x=head;
+while(x!=NULL)
+{
+   printf("%d->",x->data);
+    x=x->next;
+}
+printf("\n");
+}
+
+void reverse(struct Node *list)
+{
+   if(list == NULL)
+    {
+      return;
+    }
+
+   reverse(list->next);
+   printf("%d->",list->data);
+}
+
+int main() 
+{
+    int data;
+    int sum;
+    int choice;
+
+    while(1)
+    {
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+               
+                scanf("%d", &data);
+                insert(data);
+                break;
+
+            case 2:
+                scanf("%d", &sum);
+                int flag=sumpair(sum);
+                if(flag==1)
+                {
+                    printf("Pairs with sum %d \n", sum);
+                }
+                else
+                printf("No pair with given sum %d\n",sum);
+                break;
+
+            case 3:
+                printf("Deleted node is: %d\n",deletelastnode());
+                break;
+
+            case 4:
+                printf("Linked list elements are:\n");
+                display();
+                break;
+
+            case 5: printf("Reversed Linked list is:\n");
+                    reverse(head);
+                    
+            break;
+            case 6:
+                exit(0);
+
+            default:
+                printf("Invalid choice!!\n");
+        }
+    }
+
+    return 0;
+}
+
+8. Write a C program to reverse alternative K nodes of linked list, keeping original list intact.
+U can copy the linked list to another list before reversing everytime.
+
+Use the following menu!!
+
+1. Insert   2. display   3.Reverse K Nodes   4.Exit
+
+Sample test case:
+-------------------
+case=t1
+input=
+1 2 1 3 1 4 1 5 1 6 1 7 1 8 1 9 1 10 1 11 1 12
+2
+3 2    //user enters choice and K value as 2
+2      //display original list again
+3 3    //k value is 3
+2
+3 4
+4
+output=
+Linked list elements are:
+2->3->4->5->6->7->8->9->10->11->12->  
+Reversing alternative 2 Nodes:
+3->2->4->5->7->6->8->9->11->10->12->          //2&3 are reversed while 4 & 5 remains same 6&7 are reversed and so on.. 
+Linked list elements are:
+2->3->4->5->6->7->8->9->10->11->12->
+Reversing alternative 3 Nodes:
+4->3->2->5->6->7->10->9->8->11->12->
+Linked list elements are:
+2->3->4->5->6->7->8->9->10->11->12->
+Reversing alternative 4 Nodes:
+5->4->3->2->6->7->8->9->12->11->10->
+
+PROGRAM:
+----------------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node* next;
+};
+ struct Node* head = NULL;
+ 
+void insert(int data) 
+{
+    struct Node* node = (struct Node*) malloc(sizeof(struct Node));
+    node->data = data;
+    node->next = NULL;
+    if(head == NULL)
+    {
+        head = node;
+    } 
+    else 
+    {
+        struct Node* temp = head;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = node;
+    }
+}
+
+struct Node* reverseKnodes(struct Node* head, int k)
+{
+    struct Node* cur = head;
+    struct Node* prev = NULL;
+    struct Node* next = NULL;
+    int count = 0;
+
+    while (cur!= NULL && count<k)
+    {
+        next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+        count++;
+    }
+
+    if(head != NULL)
+    {
+        head->next = cur;
+    }
+
+    count = 0;
+    while (count<k-1 && cur!= NULL) 
+    {
+        cur = cur->next;
+        count++;
+    }
+
+    if (cur!=NULL)
+    {
+        cur->next = reverseKnodes(cur->next, k);
+    }
+
+    return prev;
+}
+
+void display(struct Node* x)
+{
+    while(x!=NULL)
+    {
+          printf("%d->",x->data);
+          x=x->next;
+    }
+    printf("\n");
+}
+
+struct Node* copylist(struct Node* head)
+{
+    if (head == NULL) 
+    {
+        return NULL;
+    }
+    else
+    {
+        struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+         newNode->data = head->data;
+         newNode->next = copylist(head->next);
+        return newNode;
+    }
+}
+
+int main() 
+{
+    int data;
+    int sum;
+    int choice;
+    int k;
+
+    while(1)
+    {
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+               
+                scanf("%d", &data);
+                insert(data);
+                break;
+
+            case 2:
+                printf("Linked list elements are:\n");
+                display(head);
+                break;
+
+            case 3:  scanf("%d",&k);
+                     printf("Reversing alternative %d Nodes:\n",k);
+                      struct Node* res = copylist(head);
+                     res=reverseKnodes(res,k);
+                     display(res);
+                 break;
+            case 4:
+                exit(0);
+
+            default:
+                printf("Invalid choice!!\n");
+        }
+    }
+
+    return 0;
+}
+
+
+9. Write a C program to implement Doublt Linked List Operations as given below.
+
+Use the following menu!!
+
+1. Insert at specific position   2. Delete from Specific Position   3.Display   4.Search an Item    5.Exit
+
+Note: DLL Node starts with position 1. Position value should be minimum 1 and should follow sequential order of insertion.
+                            (Suppose there are 3 elements already in the DLL, You can not insert element at position 5, next available position is (1<=4) )
+
+Sample test case:
+------------------
+case = t1
+input=
+1
+12 1
+1 
+45 2
+1 
+34 1
+3
+5
+output=
+FORWARD Traversal: 34->12->45-> 
+BACKWARD Traversal: 45->12->34->                                                                               
+
+case = t2
+input= 
+1
+12 1
+1 
+45 2
+1 
+34 1
+3
+2
+2
+3
+5
+output =
+FORWARD Traversal: 34->12->45-> 
+BACKWARD Traversal: 45->12->34-> 
+FORWARD Traversal: 34->45-> 
+BACKWARD Traversal: 45->34-> 
+
+case = t3
+input= 
+1                                                                               
+12 1                                                                            
+1                                                                               
+13 3
+5
+output =
+Enter a valid position 
+
+case = t4
+input=
+1
+10 1
+1
+20 2
+1
+45 2
+3
+2
+3
+3
+5
+output=
+FORWARD Traversal: 10->45 ->20-> 
+BACKWARD Traversal: 20->45->10-> 
+FORWARD Traversal: 10->45-> 
+BACKWARD Traversal: 45->10-> 
+
+case = t5
+input = 
+1                                                                               
+12 1                                                                            
+1                                                                               
+13 2                                                                            
+4 40
+5
+output=
+element not found   
+
+case = t6
+input = 
+1                                                                               
+12 1                                                                            
+1                                                                               
+13 2                                                                            
+2 3 
+5
+output=                                                                                
+Enter a valid position                                                          
+
+case = t7
+input =
+3 
+5
+output =
+DLL is empty
+   
+case =t9
+input =
+1
+12 1
+1
+45 2
+1
+34 2
+3
+2
+1
+3
+5
+output=
+FORWARD Traversal: 12->34->45-> 
+BACKWARD Traversal: 45->34->12-> 
+FORWARD Traversal: 34->45-> 
+BACKWARD Traversal: 45->34-> 
+
+case = t10
+input = 
+1                                                                               
+12 1                                                                            
+1                                                                               
+13 2                                                                            
+4 13
+5
+output=
+13 found at position 2
+
+case=t11
+input=
+1                                                                               
+12                                                                              
+1                                                                               
+1                                                                               
+23                                                                              
+2                                                                               
+1                                                                               
+34                                                                              
+3                                                                               
+1                                                                               
+56                                                                              
+1                                                                               
+4                                                                               
+23  
+5
+output=
+23 found at position 3
+
+case = t12
+input =
+4 3 
+5
+output=
+DLL is empty
+
+case = t13
+input =
+1
+12 1
+1 
+13 2
+1
+23 3
+4 13
+5
+output=
+13 found at position 2
+
+PROGRAM:
+-------------------------
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    int data;
+    struct node *next;
+    struct node *pre;
+};
+    struct node *head;
+void insert();
+void delete();
+void display();
+void search();
+int c=0,b=0;
+int main()
+{
+        int a,ch;
+        head=NULL;
+while(1)
+{
+//printf("\n1.INSERT\t2.DELETE.\t3.Display\t4.SEARCH\t5.exit");
+//printf("\nEnter ur choice:");
+scanf("%d",&ch);
+switch(ch)
+{
+        case 1:insert();
+        break;
+        case 2:delete();
+        break;
+        case 3:display();
+        break;
+        case 4:search();
+        break;
+        case 5:exit(0);
+        default:printf("Invalid choice!!");
+}
+}
+}
+void insert()
+{
+    int n,p,i;
+    struct node *temp=(struct node *)malloc(sizeof(struct node));
+    struct node *temp2,*x;
+    //printf("\nEnter the element and its position");
+    scanf("%d%d",&n,&p);
+    if(p<=0||p>c+1)
+    printf("Enter a valid position");
+    else
+        {
+            c++;
+            temp->data=n;
+            temp->next=NULL;
+            temp->pre=NULL;
+            if(head==NULL)
+            head=temp;
+          else if(p==1)
+          {
+             x=head;
+             x->pre=temp;
+             temp->next=x;
+             head=temp;
+          }
+         else
+           {
+            temp2=head;
+            for(i=1;i<p-1;i++)
+            {
+                temp2=temp2->next;
+            }
+        temp->next=temp2->next;
+        temp2->next=temp;
+        temp->pre=temp2;
+        if(p!=c)                              //inserting in the middle position if false node is inserted at last position
+             {
+              temp2=temp->next;
+             temp2->pre=temp;
+             }
+           }
+        }
+}
+void delete()
+{
+        int p,i;
+        struct node *temp1=head,*temp2;
+        //printf("\nEnter the position from which data has to be removed");
+        scanf("%d",&p);
+        if(p<=0||p>c)
+        printf("Enter a valid position");
+        else
+        {
+            c--;
+            if(p==1)
+            {
+                head=temp1->next;     //delete first node and set next node to head
+               if(c!=0)
+               {
+                temp2=temp1->next;
+                temp2->pre=temp1->pre;
+               }
+                free(temp1);
+            }
+            else
+                {
+                    for(i=1;i<p-1;i++)
+                    {
+                        temp1=temp1->next;
+                    }
+                temp2=temp1->next;
+                temp1->next=temp2->next;
+                if(p!=c+1)                 // if u deleting the element in between the other elements
+                 {
+                   temp1=temp2->next;
+                   temp1->pre=temp2->pre;
+                 }
+                    free(temp2);
+                }
+        }
+}
+void search()
+{
+        int n,p=0;
+        struct node *x;
+        //printf("\nEnter the element to be searched");
+        scanf("%d",&n);
+        if(head==NULL)
+        {
+            printf("DLL is empty");
+            return;
+        }
+        x=head;
+        while(x!=NULL)
+        {
+            p++;
+            if(x->data==n)
+            {
+                b=1;
+                break;
+            }
+            x=x->next;
+        }
+        if(b==1)
+        printf("%d found at position %d",x->data,p);
+        else
+        printf("element not found");
+}
+void display()
+{
+        int i;
+        struct node *x,*y;
+        if(head==NULL)
+        {
+            printf("DLL is empty");
+               return;
+        }
+    x=head;
+    y=head;
+        printf("\nFORWARD Traversal: ");
+    while(x!=NULL)
+    {
+        printf("%d->",x->data);
+        x=x->next;
+    }
+    printf("\nBACKWARD Traversal: ");
+    for(i=1;i<c;i++)
+    {
+        y=y->next;
+    }
+    while(y!=NULL)
+    {
+        printf("%d->",y->data);
+        y=y->pre;
+    }
+}
+
+10. Write a C program to implement Circular Linked List Operations as given below.
+
+Use the following menu!!
+
+1. Insert at specific position   2. Delete based on Value   3.Display   4.Search an Item    5.Exit
+
+Note: CLL Node starts with position 1. Position value should be minimum 1 and should follow sequential order of insertion.
+(Suppose there are 3 elements already in the CLL, You can not insert element at position 5, next available position is (1<=4) )
+
+Implement Necessary, CLL is empty, CLL is empty can not delete, Can't delete!! node doesn't exist,
+Element found at position and Search element not found conditions. 
+
+Sample test case:
+-------------------
+case=t1
+input=
+1 10 1
+1 20 2
+1 30 3
+3
+2 10
+3
+5
+output=
+CLL elements are:
+10->20->30->
+Node with value 10 deleted.
+CLL elements are:
+20->30->
+
+
+case = t2
+input=
+1 42 1
+1 63 2
+1 43 2
+1 45 3
+1 68 8
+3
+2 45
+3
+2 100
+4 63
+4 200
+5
+output=
+Enter a valid position.
+CLL elements are:                                                              
+42->43->45->63->
+Node with value 45 deleted.                                     
+CLL elements are:                                                               
+42->43->63->
+Can't delete!! node doesn't exist.                                  
+63 found at position 3  
+Search element not found
+
+case=t3
+input=
+1 23 1
+1 45 2
+1 63 3
+1 47 2
+1 68 4
+1 78 2
+3
+2 68
+1 100 6
+3
+5
+output=
+CLL elements are:                                                           
+23->78->47->45->68->63->                                                        
+Node with value 68 deleted.  
+CLL elements are:                                                               
+23->78->47->45->63->100->
+
+case=t4
+input=
+4 
+5
+output=
+CLL is empty
+
+case=t5
+input=
+2 100 5
+output=
+CLL is empty can not delete.
+
+
+case=t6
+input=
+1 100 1
+1 23 2
+1 45 3
+1 34 2
+1 67 3
+1 85 5
+3
+4 23
+5
+output=
+CLL elements are:
+100->34->67->23->85->45->
+23 found at position 4
+
+case=t7
+input=
+1 23 1
+1 45 2
+1 63 3
+1 47 2
+1 68 4
+1 78 2
+3
+4 100
+4 45
+5
+output=
+CLL elements are:                                                              
+23->78->47->45->68->63->
+Search Element not found                                
+45 found at position 4 
+
+
+case=t8
+input=
+1 2 2
+1 2 1
+1 45 2
+1 6 3
+3
+2 2
+2 45
+26
+2 6
+2 100
+5
+output=
+Enter a valid position
+CLL elements are:
+2->45->6->
+Node with value 2 deleted.
+Node with value 45 deleted.
+Invalid choice!!
+Node with value 6 deleted.
+CLL is empty can not delete
+
+PROGRAM:
+-----------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *next;
+};
+
+struct node *head=NULL;
+
+void insert();
+void deletenode();
+void display();
+void search();
+
+int c = 0, b = 0;
+
+int main()
+{
+    int ch;
+    
+    while (1)
+    {
+        //printf("\n1.INSERT\t2.DELETE.\t3.Display\t4.display-CLL\t5.SEARCH\t6.exit");
+        //printf("\nEnter your choice: ");
+        scanf("%d", &ch);
+        switch (ch)
+        {
+        case 1:
+            insert();
+            break;
+        case 2:
+            deletenode();
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            search();
+            break;
+        case 5:
+            exit(0);
+        default:
+            printf("Invalid choice!!\n");
+        }
+    }
+    return 0;
+}
+
+void insert()
+{
+    int n, p, i;
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    struct node *temp2, *x;
+    //printf("\nEnter the element and its position: ");
+    scanf("%d%d", &n, &p);
+    if (p <= 0 || p > c + 1)
+    {
+        printf("Enter a valid position\n");
+    }
+    else
+    {
+        c++;
+        temp->data = n;
+        temp->next = NULL;
+        if (p == 1)
+        {
+            temp->next = head;
+            head = temp;
+            x = head;
+            for (i = 1; i < c; i++)
+                x = x->next;
+            x->next = temp;
+        }
+        else
+        {
+            temp2 = head;
+            for (i = 1; i < p - 1; i++)
+            {
+                temp2 = temp2->next;
+            }
+            temp->next = temp2->next;
+            temp2->next = temp;
+        }
+    }
+}
+
+
+void deletenode()
+{
+    int n;
+    scanf("%d",&n);
+     struct node* cur = head;
+    struct node* prev = NULL;
+     if (head == NULL)
+     {
+        // List is empty
+        printf("CLL is empty can not delete\n");
+        return;
+    }
+     
+     do 
+     {
+        if (cur->data == n)
+        {
+            if (cur == head)                                        //if value is the head node itself
+            {
+                struct node* last = head;
+                    while (last->next != head) 
+                         {
+                             last= last->next;
+                         }
+                if (head == head->next)                             //if there is only one node in the list and its getting deleted
+                {
+                    free(head);
+                    head = NULL;
+                }
+                else                                                //More than one nodes in the list
+                {
+                    last->next = head->next;
+                    free(head);
+                    head = last->next;
+                }
+            } 
+            else                                                    //// If node is not the head node
+            {
+                prev->next = cur->next;
+                free(cur);
+            }
+            c--;
+            printf("Node with value %d deleted.\n", n);
+            return;
+        }
+        prev = cur;
+        cur = cur->next;
+    } while (cur != head);
+    
+    printf("Can't delete!! node doesn't exist.\n");
+  }
+
+
+void search()
+{
+    int n, p = 0;
+    struct node *x;
+    if (head == NULL)
+    {
+        printf("CLL is empty\n");
+        return;
+    }
+   // printf("Enter the element to be searched: ");
+    scanf("%d", &n);
+    x = head;
+    do
+    {
+        p++;
+        if (x->data == n)
+        {
+            printf("%d found at position %d\n", x->data, p);
+            return;
+        }
+        x = x->next;
+    } while(x != head);
+    printf("Search Element not found\n");
+}
+
+void display()
+{
+struct node *ptr;
+ptr=head;
+if(ptr==NULL)
+{
+printf("list is empty");
+return;
+}
+printf("CLL elements are:\n");
+
+    do{
+        printf("%d->",ptr->data);
+        ptr=ptr->next;
+    }while(ptr!=head);
+    printf("\n");
+}
+
+11. A palindrome is a word, phrase, number, or other sequence of characters which reads the same backwards and forwards. 
+Can you determine if a given string, is a palindrome? 
+To solve this challenge, we must first take each character in a queue, and also push that same character onto a stack. 
+Once that's done, we must dequeue the first character from the queue and pop the top character off the stack, 
+then compare the two characters to see if they are the same; 
+as long as the characters match, we continue dequeuing, popping, 
+and comparing each character until our containers are empty (a non-match means isn't a palindrome).
+
+TEST CASES:
+----------------------
+case=t1
+input=racecar
+output=
+racecar is a PALINDROME.
+
+case=t2
+input=madam
+output=
+madam is a PALINDROME.
+
+case=t3
+input=anilreddy
+output=
+anilreddy is not a PALINDROME.
+
+case=t4
+input=10001
+output=10001 is a PALINDROME.
+
+
+case=t5
+input=001000
+output=
+001000 is not a PALINDROME.
+
+PROGRAM:
+--------------------------
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+void push(char );
+char pop();
+void nq(char );
+char dq();
+
+typedef struct list
+{
+    char data;
+    struct list *next;
+}node;
+node *top=NULL,*front=NULL,*rear=NULL;
+
+int main()
+{
+    char word[20];
+    //printf("Type the Word:");
+    scanf("%s",word);
+    int length=strlen(word),i=0;
+    while(word[i]!='\0')
+    {
+        push(word[i]);
+        nq(word[i]);
+        i++;
+    }
+    for(i=0;i<length;i++)
+    {
+        if(pop()!=dq())
+        break;
+       
+    }
+    if(i==length)
+        printf("%s is a PALINDROME.\n",word);
+    else
+    {
+        printf("%s is not a PALINDROME.\n",word);
+    }
+    return 0;
+}
+void push(char ch)
+{
+    node *new=(node*)malloc(sizeof(node));
+    new->data=ch;
+    new->next=top;
+    top=new;
+}
+
+char pop()
+{
+    char ch;
+    if(top==NULL)
+    printf("Stack is empty,can't Pop\n");
+    else
+    {
+        ch=top->data;
+        top=top->next;
+    }
+    return ch;
+}
+
+void nq(char ch)
+{
+    node *new=(node*)malloc(sizeof(node));
+    new->data=ch;
+    new->next=NULL;
+    if(front==NULL)
+    {
+        front=new;
+        rear=new;
+    }
+    else
+    {
+        rear=front;
+        while(rear->next!=NULL)
+        {
+            rear=rear->next;
+        }
+        rear->next=new;
+    }   
+}
+
+char dq()
+{
+    char ch;
+    if(front==NULL)
+    printf("Queue is Empty, can't Deque\n");
+    else
+    {
+        ch=front->data;
+        front=front->next;
+    }
+    return ch;
+}
+
+12. Impliment Queue operations using Two STACKS.
+
+TEST CASES:
+----------------------
+case=t1
+input=1 23 1 62 1 58                                                                  
+3
+2
+4
+output=
+58                                                                              
+62                                                                              
+23                                                                              
+Removed Element: 23
+
+
+PROGRAM:
+----------------------------
+#include <stdio.h>
+
+#include <stdlib.h>
+
+//#include<conio.h>
+
+struct node
+
+{
+
+    int data;
+
+    struct node *next;
+
+};
+
+void push(struct node** top, int data);
+
+int pop(struct node** top);
+
+struct queue
+
+{
+
+    struct node *stack1;
+
+    struct node *stack2;
+
+};
+
+void enqueue(struct queue *q, int x)
+
+{
+
+    push(&q->stack1, x);
+
+}
+
+void dequeue(struct queue *q)
+
+{
+
+    int x;
+
+    if (q->stack1 == NULL && q->stack2 == NULL) {
+
+printf("Queue is empty");
+
+return;
+
+    }
+
+    if (q->stack2 == NULL) {
+
+while (q->stack1 != NULL) {
+
+x = pop(&q->stack1);
+
+push(&q->stack2, x);
+
+}
+
+    }
+
+    x = pop(&q->stack2);
+
+    printf("Removed Element: %d\n", x);
+
+}
+
+void push(struct node** top, int data)
+
+{
+
+    struct node* newnode = (struct node*) malloc(sizeof(struct node));
+
+if (newnode == NULL) {
+
+    printf("Stack overflow\n");
+
+    return;
+
+}
+
+    newnode->data = data;
+
+    newnode->next = (*top);
+
+    (*top) = newnode;
+
+}
+
+int pop(struct node** top)
+
+{
+
+    int buff;
+
+    struct node *t;
+
+    if (*top == NULL) {
+
+printf("Stack underflow \n");
+
+return -1;
+
+    }
+
+    else {
+
+t = *top;
+
+buff = t->data;
+
+*top = t->next;
+
+free(t);
+
+return buff;
+
+    }
+
+}
+
+void display(struct node *top1,struct node *top2)
+
+{
+
+    while (top1 != NULL) {
+
+printf("%d\n", top1->data);
+
+top1 = top1->next;
+
+    }
+
+    while (top2 != NULL) {
+
+printf("%d\n", top2->data);
+
+top2 = top2->next;
+
+    }
+
+}
+
+int main()
+
+{
+
+    //clrscr();
+
+    struct queue *q = (struct queue*)malloc(sizeof(struct queue));
+
+    int f = 0, a;
+
+    char ch = 'y';
+
+    q->stack1 = NULL;
+
+    q->stack2 = NULL;
+
+     while(1){
+
+//printf("\n1.Add to queue\n2.Remove from queue\n3.Display\n4.Exit\nEnter your choice:");
+
+scanf("%d", &f);
+
+switch(f) {
+
+    case 1 : //printf("Enter the element to be added to queue:");
+
+     scanf("%d", &a);
+
+     enqueue(q, a);
+
+     break;
+
+    case 2 : dequeue(q);
+
+     break;
+
+    case 3 : display(q->stack1, q->stack2);
+
+     break;
+
+    case 4 : exit(1);
+
+     break;
+
+    default : printf("Invalid Choice!\n");
+
+      break;
+
+}
+
+} 
+
+}
