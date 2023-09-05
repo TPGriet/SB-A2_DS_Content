@@ -1,1 +1,1217 @@
+1.Consider an example of plates stacked over one another in the canteen. 
+The plate which is at the top is the first one to be removed, i.e., 
+the plate which has been placed at the bottommost position remains in the stack for the longest period. 
+So,it can be simply seen to follow LIFO (Last In First Out)/FILO(First In Last Out) order. 
+Perform the following operations in the given order on an empty stack of size 5. 
+Display the stack after each operation. Mention TOP of the stack. 
+And perform the following operations like:pop (), push (5), push(8),push(3),push(4),push(2),pop().
 
+CHOICE:You can choose your option as 1.PUSH || 2.POP || 3.SHOW || 4.EXIT
+
+Test Case Example:
+-------------------------
+case=t1
+input=
+2
+1 9 1 8 1 6 1 7
+2 2 4
+output=
+Stack Underflow!!
+Push(9)                                                                         
+9                                                                               
+Push(8)                                                                         
+8                                                                               
+9                                                                               
+Push(6)                                                                         
+6                                                                               
+8                                                                               
+9                                                                               
+Push(7)                                                                         
+7                                                                               
+6                                                                               
+8                                                                               
+9                                                                               
+Popped element: 7                                                               
+6                                                                               
+8                                                                               
+9                                                                               
+Popped element: 6                                                               
+8                                                                               
+9 
+case=t2
+input=
+3                                                                               
+2                                                               
+5
+1 5 1 13 1 28 2
+4
+output=
+Stack Underflow!!
+Stack Underflow!!                                                               
+Invalid choice!!                                                                
+Push(5)                                                                         
+5                                                                               
+Push(13)                                                                        
+13                                                                              
+5                                                                               
+Push(28)                                                                        
+28                                                                              
+13                                                                              
+5                                                                               
+Popped element: 28                                                              
+13                                                                              
+5
+
+case=t3
+input=
+1 12 1 13 1 15 1 16 1 18
+4
+output=
+Push(12)                                                                        
+12                                                                              
+Push(13)                                                                        
+13                                                                              
+12                                                                              
+Push(15)                                                                        
+15                                                                              
+13                                                                              
+12                                                                              
+Push(16)                                                                        
+16                                                                              
+15                                                                              
+13                                                                              
+12                                                                              
+Stack Overflow!!                                                                
+Invalid choice!!
+
+
+PROGRAM:
+----------------------------
+#include <stdio.h>
+
+#include <stdlib.h>
+
+#define SIZE 4
+
+int top = -1, stack1[SIZE];
+void push();
+void pop();
+void show();
+
+int main()
+{
+    int choice;
+
+    while (1)
+    {
+        //printf("\nPerform operations on the stack:");
+        //printf("\n1.Push the element\n2.Pop the element\n3.Show\n4.End");
+        //printf("\n\nEnter the choice: ");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            push();
+            break;
+        case 2:
+            pop();
+            break;
+        case 3:
+            show();
+            break;
+        case 4:
+            exit(0);
+
+        default:
+            printf("Invalid choice!!\n");
+        }
+    }
+}
+
+void push()
+{
+    int x;
+
+    if (top == SIZE - 1)
+    {
+        printf("Stack Overflow!!\n");
+    }
+    else
+    {
+        //printf("\nEnter the element to be added onto the stack: ");
+        scanf("%d", &x);
+        top = top + 1;
+        stack1[top] = x;
+        printf("Push(%d)\n",x);
+        show();
+    }
+}
+
+void pop()
+{
+    if (top == -1)
+    {
+        printf("Stack Underflow!!\n");
+    }
+    else
+    {
+        printf("Popped element: %d\n", stack1[top]);
+        top = top - 1;
+        show();
+    }
+}
+
+void show()
+{
+    if (top == -1)
+    {
+        printf("Stack Underflow!!\n");
+    }
+    else
+    {
+       // printf("\nElements present in the stack: \n");
+        for (int i = top; i >= 0; --i)
+            printf("%d\t\n", stack1[i]);
+    }
+}
+
+2. In common terminology, we use the stack with same meaning like stack of CDs or stack of DVDs. 
+Extend the concept of stack in real life, you remove the CD at the top before moving CD below it. 
+So the CD which goes last on to stack, come off the stack first. 
+We can make use of stack to reverse a given string.
+To reverse a word. You push a given word to stack - letter by letter - and then pop letters from the stack.
+
+Test Cases:
+----------------------------
+case=t1
+input=WHATS WRONG WITH YOU
+output=UOY HTIW GNORW STAHW
+
+case=t2
+input=madam
+output=madam
+
+PROGRAM:
+----------------------------
+#include <stdio.h>
+#include <string.h>
+
+#define max 100
+int top=-1,stack[max];
+
+
+void push(char x){
+
+      // Push(Inserting Element in stack) operation
+      if(top==max-1){
+          printf("stack overflow");
+      }  else {
+          stack[++top]=x;
+      }  
+      
+}
+
+void pop(){
+
+    
+
+    // Pop (Removing element from stack)
+          
+      printf("%c",stack[top--]);
+}
+
+
+int main()
+{
+
+   char str[25];//="I Love Programming";
+   scanf("%[^\n]s",str);
+   
+   int len = strlen(str);
+   int i; // for(i=0;str[i]!='\0';i++)
+   
+   for(i=0; i<len; i++)
+        push(str[i]);
+
+    
+   for(i=0; i<len; i++)    
+      pop();        
+      
+}
+
+3. A queue is an abstract data type that maintains the order in which elements were added to it, 
+allowing the oldest elements to be removed from the front and new elements to be added to the rear. 
+This is called a First-In-FirstOut (FIFO) data structure because the first element added to the queue 
+(i.e., the one that has been waiting the longest) is always the first one to be removed. 
+Enqueue: add a new element to the end of the queue. 
+Dequeue: remove the element from the front of the queue and return it.
+Then process queries, where each query is one of the following types: 
+1 x: Enqueue element into the end of the queue. 
+2: Dequeue the element at the front of the queue. 
+3: Print the element at the front of the queue.
+4:Print Alll elements of Queue.
+5:EXIT.
+
+TEST CASES:
+---------------------------
+case=t1
+input=
+1 30 1 56 1 49 1 65 1 26
+2
+3
+4
+5
+output=
+Inserted(30)->Inserted(56)->Inserted(49)->Inserted(65)->Inserted(26)->         
+Deleted(30)                                                                     
+front is: 56                                                                    
+Queue is :                                                                      
+56  49  65  26
+
+
+case=t2
+input=
+2                                                                               
+1 30 1 62 1 59 2 2 
+3
+4
+5
+output=
+Queue Underflow                                                                 
+Deleted(0)                                                                      
+Inserted(30)->Inserted(62)->Inserted(59)->                                      
+Deleted(30)                                                                     
+Deleted(62)                                                                     
+front is: 59                                                                    
+Queue is :                                                                      
+59                                                                              
+                                                                                
+PROGRAM:
+------------------------
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 10
+
+int queue_arr[MAX];
+int rear=-1;
+int front=-1;
+
+void enqueue(int item);
+int dequeue();
+int peek();
+void display();
+int isFull();
+int isEmpty();
+
+int main()
+{
+        int choice,item;
+        while(1)
+        {
+                /*printf("\n1.Insert\n");
+                printf("2.Delete\n");
+                printf("3.Display element at the front\n");
+                printf("4.Display all elements of the queue\n");
+                printf("5.Quit\n");
+                printf("\nEnter your choice : ");*/
+                scanf("%d",&choice);
+
+                switch(choice)
+                {
+                case 1:
+                        //printf("\nInput the element for adding in queue : ");
+                        scanf("%d",&item);
+                        enqueue(item);
+                        break;
+                case 2:
+                        item=dequeue();
+                        printf("\nDeleted(%d)\n",item);
+                        break;
+                case 3:
+                        printf("\nfront is: %d\n",peek());
+                        break;
+                case 4:
+                        display();
+                        break;
+                case 5:
+                        exit(1);
+                default:
+                        printf("\nWrong choice\n");
+                }/*End of switch*/
+        }/*End of while*/
+
+        return 0;
+
+}/*End of main()*/
+
+void enqueue(int item)
+{
+        if( isFull() )
+        {
+                printf("\nQueue Overflow\n");
+                return;
+        }
+        if( front == -1 )
+                front=0;
+        rear=rear+1;
+        queue_arr[rear]=item ;
+        printf("Inserted(%d)->",queue_arr[rear]);
+}/*End of insert()*/
+
+int dequeue()
+{
+        int item;
+        if( isEmpty() )
+        {
+                printf("\nQueue Underflow\n");
+                //exit(1);
+        }
+        item=queue_arr[front];
+        front=front+1;
+        return item;
+}/*End of del()*/
+
+int peek()
+{
+        if( isEmpty() )
+        {
+                printf("\nQueue Underflow\n");
+                exit(1);
+        }
+        return queue_arr[front];
+}/*End of peek()*/
+
+int isEmpty()
+{
+        if( front==-1 || front>rear )
+                return 1;
+        else
+                return 0;
+}/*End of isEmpty()*/
+
+int isFull()
+{
+        if( rear==MAX-1 )
+                return 1;
+        else
+                return 0;
+}/*End of isFull()*/
+
+void display()
+{
+        int i;
+        if ( isEmpty() )
+        {
+                printf("\nQueue is empty\n");
+                return;
+        }
+        printf("\nQueue is :\n\n");
+        for(i=front;i<=rear;i++)
+                printf("%d  ",queue_arr[i]);
+        printf("\n\n");
+}/*End of display() */
+
+4. A bracket is considered to be any one of the following characters: (, ), {, }, [, or ]. 
+Two brackets are considered to be a well formed if the an opening bracket (i.e., (, [, or {)
+occurs to the left of a closing bracket (i.e., ), ], or }) of the exact same type.
+There are three types of matched pairs of brackets: [], {}, and ().
+A matching pair of brackets is not balanced if the set of brackets it encloses are not matched.
+For example, {[(])} is not balanced because 
+the contents in between { and } are not balanced. 
+The pair of square brackets encloses a single, unbalanced opening bracket, (, and the pair of parentheses encloses a single,
+unbalanced closing square bracket, ].
+
+Write a c program to check for well formed paranthesis.
+
+Constraint: The maximum characters that can be stored in stack is upto 10.
+
+Sample test cases:
+------------------
+case=t1
+input=(){}
+output=Well Formed Parenthesis
+
+case=t2
+input=((({})))
+output=Well Formed Parenthesis
+
+case=t3
+input={}[(]}
+output=Not Well Formed Parenthesis
+
+case=t4
+input={]}
+output=Not Well Formed Parenthesis
+
+case=t5
+input=()()()()()()()()()()()()
+output=Well Formed Parenthesis
+
+case=t6
+input=((((([[[[[[
+output=Not Well Formed Parenthesis
+PROGRAM:
+----------------------
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 10
+
+char stack[MAX];
+int top = -1;
+
+void push(char item)
+{
+  if (top == (MAX - 1))
+  {
+    printf("Stack is Full\n");
+    return;
+  }
+  else 
+  {
+    top = top + 1;
+    stack[top] = item;
+  }
+}
+
+void pop() 
+{
+  if (top == -1)
+    printf("Stack is Empty\n");
+  else
+    top = top - 1;
+}
+
+int checkPair(char val1, char val2) 
+{
+    return ((val1 == '(' && val2 == ')') || (val1 == '[' && val2 == ']') || (val1 == '{' && val2 == '}'));
+}
+
+int checkBalanced(char expr[], int len) 
+{
+    for (int i = 0; i < len; i++) 
+    {
+        if (expr[i] == '(' || expr[i] == '[' || expr[i] == '{') 
+        {
+            push(expr[i]);
+        }
+        else 
+        {
+            if (top == -1)
+                return 0;
+            else if (checkPair(stack[top], expr[i]))
+            {
+                pop();
+                continue;
+            }
+            return 0;
+        }
+    }
+    return (top == -1);
+}
+
+int main() {
+    char exp[MAX];
+    //printf("Enter the expression: ");
+    scanf("%s",exp);
+    
+    int len = strlen(exp);
+    if (checkBalanced(exp, len))
+        printf("Well Formed Parenthesis");
+    else
+        printf("Not Well Formed Parenthesis");
+
+    return 0;
+}
+
+5. Write a C program to convert a decimal number to its binary equivalent using stack.
+TEST CASES:
+-------------------------
+case=t1
+input=5
+output=101
+
+case=t2
+input=10
+output=1010
+
+case=t3
+input=14
+output=1110
+
+case=t4
+input=8
+output=1000
+
+PROGRAM:
+----------------------------
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 10
+
+char stack[MAX];
+int top = -1;
+
+void push(char item)
+{
+  if (top == (MAX - 1))
+  {
+    printf("Stack is Full\n");
+    return;
+  }
+  else 
+  {
+    top = top + 1;
+    stack[top] = item;
+  }
+}
+
+void pop() 
+{
+  if (top == -1)
+    printf("Stack is Empty\n");
+  else
+    for(int i=top;i>=0;i--)
+       printf("%d",stack[i]);
+}
+
+
+
+int main() {
+   int num;
+   scanf("%d",&num);
+   while(num>0)
+   {
+        int r = num % 2;
+        push(r);
+        num /= 2;
+   }
+pop();    
+    return 0;
+}
+
+6. Write a c program to convert infix expression into postfix expression.
+
+Algorithm:
+----------------
+1. First Start scanning the expression(max length 20) from left to right
+2. If the scanned character is an operand, output it, i.e. print it
+3. Else
+   3.1 If the precedence of the scanned operator is higher than the precedence of the operator in the stack.
+       (or stack is empty or has '('), then push operator in the stack.
+   3.2 Else, Pop all the operators, that have greater or equal precedence than the scanned operator. 
+       Once you pop them push this scanned operator. (If we see a opening parenthesis while popping then stop 
+       and push scanned operator in the stack)
+4. If the scanned character is an  '(', push it to the stack.
+5. If the scanned character is an  ')', pop the stack and output it until a '(' is encountered, and discard both the parenthesis.
+6. Now, we should repeat the steps 2 – 5 until the whole characters are scanned.
+7. Print output
+8. Do the pop and output (print) until stack is not empty
+
+Note: The expression should include only opening and closing braces i.e ( and ).
+      if any other brace exists in expression. print appropriate error message given in testcase.
+      Expression should be well formed expression. check the testcases given.
+      Include these constraints while developing the program along with the given algorithm.
+
+Sample test cases:
+------------------
+case=t1
+input=(a+b)*c
+output=Postfix expression is : ab+c*
+
+case=t2
+input=a+b*c/d-f+a^e
+output=Postfix expression is : abc*d/+f-ae^+
+
+case=t3
+fail message="hidden test case"
+input=(a+B-E)+{1-]
+output=Invalid Infix Expression-Different parenthesis in expression
+
+case=t4
+input=(a+b
+output=Invalid Infix Expression - missing close brace
+
+case=t5
+input=a+b)
+output=Invalid Infix Expression - missing open brace
+
+case=t6
+input=(a+b)-(c*d)
+output=Postfix expression is : ab+cd*-
+
+case=t7
+input=(a+b)-c*d)
+output=Invalid Infix Expression - missing open brace
+
+case=t8
+input=(a+b-)
+output=Invalid Infix Expression - operators and operands doesnot match
+
+case=t9
+input=(a+b}
+output=Invalid Infix Expression-Different parenthesis in expression
+
+case=t10
+fail message="hidden test case check operator and operand count"
+input=(a+b--c)
+output=Invalid Infix Expression - operators and operands doesnot match       
+
+PROGRAM:
+-------------------------------
+#include<ctype.h>
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 20
+char stack[MAX];
+int top=-1;
+void push(char);
+char pop();
+int getpriority(char);
+int toPostfix(char[]);
+char infix[MAX],postfix[MAX];
+int main()
+{
+ int flag=1;
+
+ scanf("%s",infix);
+ flag=toPostfix(infix);
+ if(flag==1)
+ printf("Postfix expression is : %s",postfix);
+ else
+ printf("Invalid Infix Expression - operators and operands doesnot match");
+ return 0;
+}
+
+int toPostfix(char infix[])
+{
+     char temp,ch;
+     int i,j=0,operatorcount=0,operandcount=0;
+
+     for(i=0;(ch=infix[i])!='\0';i++)
+     {
+	     if(ch=='(')  
+	       push(ch);
+	     else if(isalpha(ch)||isdigit(ch)) 
+	       {
+	           operandcount++;
+	         postfix[j]=ch;
+	         j++;
+	       }
+	     else if(ch=='^'||ch=='+'||ch=='-'||ch=='*'||ch=='/'||ch=='%')  
+	       {
+	           operatorcount++;
+	         while((getpriority(stack[top])>=getpriority(ch)))
+	          {  
+	            postfix[j]=pop();
+	            j++;
+	           }
+	          push(ch);
+	       }
+	     else if(ch==')')
+	        {
+	          while((stack[top]!='('))
+	          {
+		        postfix[j]=pop();
+		        j++;
+	          }
+	          temp=pop();
+	        }
+	     else
+	     {
+	         printf("\nInvalid Infix Expression-Different parenthesis in expression");
+             exit(0);
+
+	     }
+    }
+  while((top!=-1))
+  { 
+    ch=pop();
+    if(ch=='(')
+    {
+        printf("\nInvalid Infix Expression - missing close brace");
+        exit(0);
+    }
+    postfix[j]=ch;
+    j++;
+  }
+  postfix[j]='\0';
+  if(operatorcount==operandcount-1)
+  return 1;
+  else
+  return 0;
+  
+}
+
+void push(char element)
+{
+  if(top==MAX-1)
+  printf("\nStack overflow:");
+  else
+   stack[++top]=element;
+}
+
+char pop()
+{
+  if(top==-1)
+  {
+   printf("\nInvalid Infix Expression - missing open brace");
+   exit(0);
+  }
+  else
+  return stack[top--];
+}
+
+int getpriority(char op)
+{
+ if(op=='^')
+ return 2; 
+ else if(op=='/'||op=='*'||op=='%')
+ return 1;
+ else if(op=='+'||op=='-')
+ return 0;
+ else
+ return -1;
+}
+
+7. Any infix op1 oper op2 can be written as op1 op2 oper
+Where op1 = Operand 1
+op2 = Operand2
+oper = Operation
+Example a + b can be written as ab+ in prefix
+
+Sample Test Cases:
+----------------------------------
+case=t1
+input=(a+b)*c
+output=Prefix expression is : *+abc
+
+case=t2
+input=a+b*c/d-f+a^e
+output=Prefix expression is: +a-*b/cd+f^ae
+
+
+case=t3
+fail message="hidden test case"
+input=(a+B-E)+{1-]
+output=Invalid Infix Expression-Different parenthesis in expression
+
+case=t4
+input=(a+b
+output=Invalid Infix Expression - missing close parenthesis
+
+case=t5
+input=a+b)
+output=Invalid Infix Expression - missing open parenthesis
+
+case=t6
+input=(a+b)-(c*d)
+output=Prefix expression is : -+ab*cd 
+
+case=t7
+input=(a+b)-c*d)
+output=Invalid Infix Expression - missing open parenthesis
+
+case=t8
+input=(a+b-)
+output=Invalid Infix Expression - operators and operands do not match
+
+case=t9
+input=(a+b}
+output=Invalid Infix Expression - Different parenthesis in expression
+
+case=t10
+fail message="hidden test case check operator and operand count"
+input=(a+b--c)
+output=Invalid Infix Expression - operators and operands do not match 
+
+PROGRAM:
+-----------------------------
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX 20
+
+char stack[MAX];
+int top = -1;
+
+void push(char);
+char pop();
+int getPriority(char);
+int toPrefix(char[]);
+void customStrrev(char[]);
+
+char infix[MAX], prefix[MAX];
+
+int main() {
+    int flag = 1;
+
+    //printf("Enter the infix expression: ");
+    scanf("%s", infix);
+
+    // Reverse the infix expression
+    customStrrev(infix);
+   // printf("%s",infix);
+
+    flag = toPrefix(infix);
+
+    if (flag == 1) 
+    {
+        // Reverse the prefix expression back
+        //printf("%s",prefix);
+        customStrrev(prefix);
+        printf("Prefix expression is: %s\n", prefix);
+    } else
+    {
+        printf("Invalid Infix Expression - operators and operands do not match\n");
+    }
+
+    return 0;
+}
+
+int toPrefix(char infix[])
+{
+    char ch;
+    int i, j = 0, operatorCount = 0, operandCount = 0;
+
+    for (i = 0; (ch = infix[i]) != '\0'; i++)
+    {
+        if (ch == ')')
+            push(ch);
+        else if (isalpha(ch) || isdigit(ch)) 
+        {
+            operandCount++;
+            prefix[j] = ch;
+            j++;
+        } else if (ch == '^' || ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%') {
+            operatorCount++;
+            while (getPriority(stack[top]) >= getPriority(ch)) {
+                prefix[j] = pop();
+                j++;
+            }
+            push(ch);
+        } else if (ch == '(') {
+            while (stack[top] != ')') {
+                prefix[j] = pop();
+                j++;
+            }
+            pop();
+        } else {
+            printf("\nInvalid Infix Expression - Different parenthesis in expression\n");
+            exit(0);
+        }
+    }
+
+    while (top != -1) {
+        ch = pop();
+        if (ch == ')') {
+            printf("\nInvalid Infix Expression - Missing open parenthesis\n");
+            exit(0);
+        }
+        prefix[j] = ch;
+        j++;
+    }
+    prefix[j] = '\0';
+
+    if (operatorCount == operandCount - 1)
+        return 1;
+    else
+        return 0;
+}
+
+void push(char element) {
+    if (top == MAX - 1)
+        printf("\nStack overflow\n");
+    else
+        stack[++top] = element;
+}
+
+char pop() {
+    if (top == -1) {
+        printf("\nInvalid Infix Expression - Missing close parenthesis\n");
+        exit(0);
+    } else
+        return stack[top--];
+}
+
+int getPriority(char op) {
+    if (op == '^')
+        return 2;
+    else if (op == '/' || op == '*' || op == '%')
+        return 1;
+    else if (op == '+' || op == '-')
+        return 0;
+    else
+        return -1;
+}
+
+void customStrrev(char infix[])
+{
+    int i, len;
+    char temp;
+
+    len = strlen(infix);
+
+    for (i = 0; i < len / 2; i++) 
+    {
+        temp = infix[i];
+        infix[i] = infix[len - i - 1];
+        infix[len - i - 1] = temp;
+    }
+}
+
+8. Write a C program to implement circular queue operations. (max queue size 3)
+1. Insert   2. Delete   3.Display  4.Exit
+
+Algorithm:
+--------------
+•	two pointers FRONT and REAR
+•	FRONT track the first element of the queue
+•	REAR track the last elements of the queue
+•	initially, set value of FRONT and REAR to -1
+1. Enqueue Operation
+------------------------------
+•	check if the queue is full
+•	for the first element, set value of FRONT to 0
+•	circularly increase the REAR index by 1 (REAR=(REAR+1)%Size) (i.e. if the rear reaches the end, next it would be at the start of the queue)
+•	add the new element in the position pointed to by REAR
+
+2. Dequeue Operation
+--------------------------------
+•	check if the queue is empty
+•	return the value pointed by FRONT
+•	circularly increase the FRONT index by 1
+•	for the last element, reset the values of FRONT and REAR to -1
+
+However, the check for full queue has a new additional case:
+•	Case 1: FRONT = 0 && REAR == SIZE - 1
+•	Case 2: FRONT = REAR + 1
+The second case happens when REAR starts from 0 due to circular increment and when its value is just 1 less than FRONT, the queue is full.
+
+
+Sample test case:
+------------------
+case = t1
+input = 
+1                                                                               
+12                                                                              
+1                                                                               
+21                                                                              
+1                                                                               
+45                                                                              
+3  
+2
+2
+1
+50
+1
+80
+3
+1
+100
+4
+output =
+12      21      45                                                              
+rear=2 pointing at 45                                                           
+front=0 pointing at 12                                                          
+Deleted Element is 12                                                           
+Deleted Element is 21                                                           
+50   80   45                                                                      
+rear=1 pointing at 80                                                           
+front=2 pointing at 45  
+queue overflow
+
+case = t2
+fail message="hidden case"
+input = 1                                                                               
+12                                                                              
+1                                                                               
+21                                                                              
+1                                                                               
+45                                                                              
+3
+1                                                                               
+50 
+4
+output = 
+12      21      45                                                              
+rear=2 pointing at 45                                                          
+front=0 pointing at 12                                                          
+queue overflow 
+
+case = t3
+input = 
+1                                                                               
+12                                                                              
+1                                                                               
+21                                                                              
+1                                                                               
+45                                                                              
+3  
+2
+2
+1
+50
+3
+4
+output =
+12      21      45                                                              
+rear=2 pointing at 45                                                           
+front=0 pointing at 12                                                          
+Deleted Element is 12                                                           
+Deleted Element is 21                                                           
+50      45                                                                      
+rear=0 pointing at 50                                                           
+front=2 pointing at 45   
+
+case = t4
+input = 3 4
+output = queue is empty
+
+case = t5
+input = 1
+12
+1
+45
+2
+2
+2
+4
+output = 
+Deleted Element is 12
+Deleted Element is 45
+queue underflow
+
+case = t6
+input = 1                                                                               
+12                                                                              
+1                                                                               
+21                                                                              
+1                                                                               
+45                                                                              
+1
+50 
+4
+output = 
+queue overflow 
+                 
+
+case = t7
+fail message="invalid choice case"
+input = 7 4
+output = invalid choice
+PROGRAM:
+------------------------
+#include<stdio.h>
+#include<stdlib.h>
+#define SIZE 3  
+void CQinsert(int elem);
+int CQdelete();
+int CQfull();
+int CQempty();
+void display();
+
+char Q[SIZE],f=-1,r=-1;
+	
+int main()
+{                         
+int choice;
+int elem;
+for(;;)
+{
+	//printf("\n 1.Insert\n 2.Delete\n 3.Display\n 4.Exit\n");
+	scanf("%d",&choice);
+	switch(choice)
+	{
+		case 1: //printf("\n\nRead the element to be Inserted ?");
+			scanf("%d",&elem);
+			CQinsert(elem);
+			break;
+		case 2: elem=CQdelete();
+			if(elem != 0)
+				printf("Deleted Element is %d\n",elem);
+			break;
+		case 3: display();
+			break;
+		case 4: exit(0);
+		default: printf("invalid choice");
+		   
+	}
+    }
+}	
+
+void CQinsert(int elem)
+{                       		
+if(CQfull())
+	printf("queue overflow");
+else
+    {
+	if(f==-1)
+			f=0;
+	r=(r+1) % SIZE;
+	Q[r]=elem;
+    }
+}
+
+int CQdelete()
+{     			                  
+int elem;
+if(CQempty())
+    {
+	printf("queue underflow");
+	return 0;
+    }
+else
+    {
+	elem=Q[f];
+	if(f==r)
+	{
+			f=-1; r=-1;
+	}				 
+	else
+			f=(f+1) % SIZE;
+	return elem;
+    }
+}
+
+int CQfull()
+{                     
+if((f==r+1) || (f == 0 && r== SIZE-1))
+	return 1;
+return 0;
+}
+
+int CQempty()
+{                   
+if(f == -1)
+	return 1;
+return 0;
+}
+
+void display()
+{       
+int i,j;
+if(CQempty())
+	printf("queue is empty");
+else
+{
+    if(f>r)
+    {
+        for(i=0;i<=r;i++)
+            printf("%d\t",Q[i]);
+        for(j=f;j<=SIZE-1;j++)
+            printf("%d\t",Q[j]);
+        printf("\nrear=%d pointing at %d\n",r,Q[r]);
+        printf("\nfront=%d pointing at %d\n",f,Q[f]);
+    }
+    else{
+        for(i=f;i<=r;i++)
+        printf("%d\t",Q[i]);
+        printf("\nrear=%d pointing at %d\n",r,Q[r]);
+        printf("\nfront=%d pointing at %d\n",f,Q[f]);
+    }
+}
+}
