@@ -1,1 +1,1567 @@
+1. Implement the following operations on Binary Search Tree.
+
+ 1.Insert  2.Delete     3.Display(INORDER)   4.Search     5.Exit
+Note: for delete operation Use the concept of Inorder Successor of a given Node in BST.
+ Inorder successor of a node is the next node in Inorder traversal of the Binary Search Tree.
+
+Test case example:
+-------------------------
+case=t1
+input=
+1 12                                                                            
+1 34                                                                            
+1 3                                                                             
+1 8                                                                             
+1 9                                                                             
+1 45                                                                            
+1 6                                                                             
+4  
+2 12
+4
+3 8
+3 100
+5
+output=
+INORDER TRAVERSAL OF BST:
+3->6->8->9->12->34->45->
+Element 12 deleted
+INORDER TRAVERSAL OF BST:
+3->6->8->9->34->45->
+Search Successful 8 is found in BST
+Search Unsuccessful 100 is not found in BST
+
+
+case=t2
+input=
+1 12                                                                            
+1 34                                                                            
+1 3                                                                             
+1 8                                                                             
+1 9                                                                             
+1 45                                                                            
+1 6                                                                             
+4  
+2 3
+4
+5
+output=
+INORDER TRAVERSAL OF BST:
+3->6->8->9->12->34->45->
+Element 3 deleted
+INORDER TRAVERSAL OF BST:
+6->8->9->12->34->45->
+
+
+case=t3
+input=
+2 45 5
+output=
+Can not Delete!! Either Element doesn't exist or BST is empty
+
+case=t4
+input=
+3 45 5
+output=
+can not search when BST is empty
+
+case=t5
+input=
+10 5
+output=Invalid Choice!!
+
+
+case=t6
+input=
+1 12
+1 45
+1 3
+1 8
+1 9
+1 34
+1 6
+4
+2 3
+2 12
+2 34
+2 78
+4
+5
+output=
+INORDER TRAVERSAL OF BST:
+3->6->8->9->12->34->45->
+Element 3 deleted
+Element 12 deleted
+Element 34 deleted
+Can not Delete!! Either Element doesn't exist or BST is empty
+INORDER TRAVERSAL OF BST:
+6->8->9->45->
+
+PROGRAM:
+-----------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+struct node *root = NULL;
+
+struct node *getnode(int n);
+struct node *insert(struct node *root, int data);
+int search(struct node *root, int data);
+struct node *del(struct node *root, int n);
+struct node *rmin(struct node *root);
+void display(struct node *root);
+
+int ch, n, key, a, k,flag=0;
+int main() 
+{
+    
+    while (1) 
+    {
+       // printf("\n1. Insert\n2. Delete\n3. Search\n4. Display\n5. Exit\nEnter your choice: ");
+        scanf("%d", &ch);
+        switch (ch)
+        {
+        case 1:
+            //printf("\nEnter the element to be inserted: ");
+            scanf("%d", &n);
+            root = insert(root, n);
+            break;
+
+        case 2:
+                scanf("%d",&k);
+	             root=del(root,k);
+	             if(flag==1)
+	              printf("Can not Delete!! Either Element doesn't exist or BST is empty\n");
+                 else
+                  printf("Element %d deleted\n",k);
+	             break;
+
+        case 3:
+                //printf("\nEnter the element to be searched: ");
+                scanf("%d", &key);
+                if(root==NULL)
+                {
+                    printf("can not search when BST is empty\n");
+                }
+                else if(search(root,key)==1)
+                 printf("Search Successful %d is found in BST\n",key);
+	             else
+	             printf("Search Unsuccessful %d is not found in BST\n",key);
+	             break;
+
+        case 4:if(root==NULL)
+	               printf("BST is empty!!\n");
+	            else
+                {
+	             printf("INORDER TRAVERSAL OF BST:\n");
+	             display(root);
+                }
+	            break;
+
+         case 5:
+               exit(0);
+                break;
+
+         default:
+            printf("Invalid choice!!");
+        }
+    }
+}
+
+struct node *getnode(int n) 
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp->data = n;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+struct node *insert(struct node *root, int data)
+{
+    if (root == NULL) 
+    {
+        root = getnode(data);
+        return root;
+    } 
+    else if (data <= root->data)
+        root->left = insert(root->left, data);
+    else
+        root->right = insert(root->right, data);
+    return root;
+}
+
+int search(struct node *root, int data)
+{
+    if(root==NULL)
+    return 0;
+    else if (root->data == data)
+        return 1;
+    else if (data < root->data)
+        return search(root->left, data);
+    else
+        return search(root->right, data);
+}
+
+void display(struct node *root) 
+{
+    if (root == NULL)
+        return;
+    display(root->left);
+      printf("%d->", root->data);
+    display(root->right);
+  
+}
+
+struct node *rmin(struct node *root)
+{
+    if (root == NULL)
+        return 0;
+    while (root->left != NULL)
+        root = root->left;
+    return root;
+}
+
+struct node *del(struct node *root, int val)
+{
+   struct node* temp;
+    if(root == NULL)
+    {   
+        flag=1;
+        return NULL; 
+    }
+    if(val > root->data)
+        root->right = del(root->right,val);
+    else if(val < root->data)
+        root->left = del(root->left,val);
+    else
+    {
+        flag=0;
+        if(root->left == NULL && root->right == NULL) 
+        {
+            temp=root;
+            free(temp);
+            root=NULL;
+        }
+        else if(root->left == NULL)  
+            root=root->right;
+        else if(root->right == NULL) 
+            root=root->left;
+        else  
+        {
+            temp=rmin(root->right);
+            root->data=temp->data;
+            root->right=del(root->right,temp->data); 
+        }
+
+    }
+ return root;
+}
+
+
+2. Implement the following operations on Binary Search Tree:
+
+1.Insert  2.NODE COUNT   3. HEIGHT of BST   4.MINIMUM Value   5. MAXIMUM Value   6.Display Level Order    7.Exit
+
+Test case example:
+------------------
+case=t1
+input=1 12
+1 45
+1 3
+18
+1 8
+1 6
+1 9
+1 34
+2
+3
+4
+5
+6
+7
+output=
+Invalid Choice!!
+Number of nodes in BST is: 7
+Height of BST is: 4
+Minimum Value in BST is: 3
+Maximum Value in BST is: 45
+Level Order traversal of BST is:                                                
+12->3->45->8->34->6->9->  
+
+
+
+case=t2
+input=
+1 2
+1 4
+1 7
+1 45
+1 34
+1 89
+1 23
+1 2
+2
+3
+4
+5
+6
+7
+output=
+
+Number of nodes in BST is: 8
+Height of BST is: 6
+Minimum Value in BST is: 2
+Maximum Value in BST is: 89
+Level Order traversal of BST is:
+2->2->4->7->45->34->89->23->
+
+case=t3
+input=
+2
+3
+4
+5
+1 12
+1 3
+1 5
+1 67
+1 100
+1 3 
+1 7
+1 9
+1 13
+1 72
+2
+3
+4
+5
+6
+7
+output=
+Number of nodes in BST is: 0
+Height of BST is: 0
+BST is empty. Can not find the value
+BST is empty. Can not find the value
+Number of nodes in BST is: 10
+Height of BST is: 5
+Minimum Value in BST is: 3
+Maximum Value in BST is: 100
+Level Order traversal of BST is:
+12->3->67->3->5->13->100->7->72->9->
+
+case=t4
+input=6 7
+output=
+BST is empty
+
+PROGRAM:
+---------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+struct node *root = NULL;
+
+struct node *getnode(int n);
+struct node *insert(struct node *root, int data);
+int countNodes(struct node* root);
+int height(struct node* root);
+int minValue(struct node* node);
+int maxValue(struct node* node);
+void display(struct node* root);
+void levelorder(struct node* root, int level);
+
+int main()
+{
+    int ch, n, a, k;
+    while (1)
+    {
+        scanf("%d",&ch);
+        switch(ch) 
+        {
+            
+        case 1:
+            scanf("%d", &n);
+            root = insert(root, n);
+            break;
+        case 2:
+            printf("Number of nodes in BST is: %d\n", countNodes(root));
+            break;
+
+        case 3:
+            printf("Height of BST is: %d\n", height(root));
+            break;
+
+        case 4:if(root==NULL)
+              printf("BST is empty. Can not find the value\n");
+              else
+               printf("Minimum Value in BST is: %d\n", minValue(root));
+            break;
+
+        case 5:if(root==NULL)
+                printf("BST is empty. Can not find the value\n");
+                     else
+                printf("Maximum Value in BST is %d\n", maxValue(root));
+            break;
+
+        case 6: if(root==NULL)
+                {
+                    printf("BST is empty\n");
+                }
+                else
+                {
+                     printf("Level Order traversal of BST is:\n");
+                     display(root);
+                }
+               
+        case 7:
+            exit(0);
+
+        default:
+            printf("Invalid Choice!!");
+        }
+    }
+}
+
+struct node *getnode(int n)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp->data = n;
+    temp->left = NULL;
+    temp->right = NULL;
+    return temp;
+}
+
+struct node *insert(struct node *root, int data)
+{
+    if (root == NULL)
+    {
+        root = getnode(data);
+        return root;
+    } else if (data <= root->data)
+        root->left = insert(root->left, data);
+    else
+        root->right = insert(root->right, data);
+    return root;
+}
+
+int countNodes(struct node* root)
+{
+    if (root == NULL)
+        return 0;
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+
+int height(struct node* root) 
+{
+    if (root == NULL)
+        return 0;
+    else {
+        int lDepth = height(root->left);
+        int rDepth = height(root->right);
+        return (lDepth > rDepth) ? (lDepth + 1) : (rDepth + 1);
+    }
+}
+
+int minValue(struct node* node) 
+{
+    struct node* cur = node;
+    while (cur->left != NULL)
+        cur = cur->left;
+    return cur->data;
+}
+
+int maxValue(struct node* node)
+{
+    struct node* cur = node;
+    while (cur->right != NULL)
+        cur = cur->right;
+    return cur->data;
+}
+
+void display(struct node* root)
+{
+    int h = height(root);
+    int i;
+    for (i = 1; i <= h; i++)
+    {
+        levelorder(root, i);
+    }
+}
+ 
+void levelorder(struct node* root, int level)
+{
+    if (root == NULL)
+    {
+        return;
+    }
+    if (level == 1)
+        printf("%d->", root->data);
+    else if (level > 1) 
+    {
+        levelorder(root->left, level - 1);
+        levelorder(root->right, level - 1);
+    }
+}
+
+
+3.  Write a C program to implement Binary Tree Using stack and queue. where we are inserting elements into Binary tree using queue, level wise. 
+and displaying the elements of binary tree in preorder using stack.
+
+Input Format: User need to enter 'n' number of nodes to be created in the binary tree.
+              The first element entered on the screen will become the root node. The next subsequent elements should follow the level order insertion.
+              After completing each level, the elements should be inserted in next possible level starting from left to right!!
+
+Output Format: Preorder display of Tree elements!!
+
+Constraints: Maximum number of nodes can be upto 20
+             Stack and queue size 20
+
+Test case example:
+------------------
+case=t1
+input=10
+2 4 6 5 78 35 23 86 356 788
+output=
+Preorder traversal of the Binary Tree is:
+2->4->5->86->356->78->788->6->35->23->
+
+
+case=t2
+input=5
+2
+1 
+8
+9
+10
+output=
+Preorder traversal of the Binary Tree is:
+2->1->9->10->8->
+
+case=t3
+3
+input=
+20
+2
+1
+4
+5
+6
+7
+5
+4
+3
+2
+4
+5
+6
+7
+8
+9
+65
+45
+43
+34
+output=
+Preorder traversal of the Binary Tree is:
+2->1->5->4->9->65->3->45->43->6->2->34->4->4->7->5->6->5->7->8->
+
+case=t4
+input=1
+3
+output=
+Preorder traversal of the Binary Tree is:
+3->
+
+case=t5
+input=
+5
+2 -10 6 7 45
+output=
+Preorder traversal of the Binary Tree is:
+2->-10->7->45->6->
+
+PROGRAM:
+---------------------------
+#include <stdio.h>
+#include <stdlib.h>
+
+// Define the structure for a binary tree node
+struct Node 
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+    struct Node* root = NULL;
+
+
+struct Node* createnode(int data)
+{
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+void insertlevelwise(struct Node* root, int data)
+{
+    if (root == NULL)
+        return;
+
+    struct Node* queue[20];
+    int f = -1, r = -1;
+
+    queue[++r] = root;
+
+    while (f != r)
+    {
+        struct Node* temp = queue[++f];
+
+        if (temp->left == NULL)
+        {
+            temp->left = createnode(data);
+            break;
+        } 
+        else
+            queue[++r] = temp->left;
+
+        if (temp->right == NULL)
+        {
+            temp->right = createnode(data);
+            break;
+        } 
+        else 
+            queue[++r] = temp->right;
+    }
+}
+
+void preorder(struct Node* root)
+{
+    if (root == NULL)
+        return;
+
+    struct Node* stack[20];
+    int top = 0;
+    stack[top] = root;
+
+    while (top >= 0) 
+    {
+        struct Node* cur = stack[top--];
+
+        printf("%d->", cur->data);
+
+        if (cur->right != NULL)
+            stack[++top] = cur->right;
+
+        if (cur->left != NULL)
+            stack[++top] = cur->left;
+    }
+}
+
+int main()
+{
+    int n;
+   // printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    int data;
+
+   // printf("Enter the first node value: ");
+    scanf("%d", &data);
+
+    root = createnode(data);
+
+    int i;
+    for (i = 1; i<n; i++) 
+    {
+        scanf("%d", &data);
+        insertlevelwise(root, data);
+    }
+
+    printf("Preorder traversal of the Binary Tree is:\n");
+    preorder(root);
+
+    return 0;
+}
+
+
+4. 
+Write a C program to construct a max heap tree and then sort the elements in ascending order.
+
+Input Format: User need to enter 'n' number of nodes to be created in the complete binary tree.
+              Then enter the elements and insert into the tree in level wise.
+
+Output Format: Display Max heap and Sorted output separately.
+
+Constraints: Maximum number of Elements can be upto 20
+
+Test case example:
+------------------
+case=t1
+input=6
+2 9 78 23 45 32
+output=
+The max Heap is:
+78 45 32 23 9 2 
+Sorted Elements are:
+2 9 23 32 45 78 
+
+case=t2
+input=
+8
+2 1 3 89 32 45 78 12
+The max Heap is:
+89 32 78 12 2 45 3 1 
+output=
+Sorted Elements are:
+1 2 3 12 32 45 78 89 
+
+case=t3
+input=7
+45 -1 23 67 45 23 89 123
+output=
+The max Heap is:
+89 67 45 -1 45 23 23 
+Sorted Elements are:
+-1 23 23 45 45 67 89 
+
+case=t4
+input=
+4
+1 2 3 4
+output=
+The max Heap is:
+4 2 3 1 
+Sorted Elements are:
+1 2 3 4 
+
+PROGRAM:
+---------------------------
+#include <stdio.h>  
+void display(int arr[], int n);
+void heapify(int a[], int n, int i); 
+void heapSort(int a[], int n); 
+
+void heapify(int a[], int n, int i)  
+{  
+    int max = i; 
+    int left = 2 * i + 1; 
+    int right = 2 * i + 2; 
+
+    if (left < n && a[left] > a[max])  
+        max = left;  
+ 
+    if (right < n && a[right] > a[max])  
+        max = right;  
+ 
+    if (max!= i) 
+    {  
+        int temp = a[i];  
+        a[i] = a[max];  
+        a[max] = temp;  
+          
+        heapify(a, n, max);  
+    }  
+}  
+
+void heapSort(int a[], int n)  
+{  
+    for (int i = n/2 - 1; i >= 0; i--)  // i = n / 2 - 1 find the index of the last non-leaf node in complete BT
+        heapify(a, n, i);  
+        
+        printf("The max Heap is:\n");   
+        display(a,n);
+        printf("\n");
+    
+    for (int i = n - 1; i >= 0; i--) 
+    {  
+        int temp = a[0];  
+        a[0] = a[i];  
+        a[i] = temp;  
+        
+        heapify(a, i, 0);  
+    
+    }  
+       
+}  
+
+void display(int arr[], int n)  
+{  
+    for (int i = 0; i < n; ++i)  
+    {  
+        printf("%d ", arr[i]);  
+    }  
+          
+}  
+int main()  
+{  
+   int n;
+   scanf("%d",&n);
+   int a[n];
+   for(int i=0;i<n;i++)
+   {
+       scanf("%d",&a[i]);
+   }
+    heapSort(a, n);  
+    printf("Sorted Elements are:\n");    
+    display(a, n);  
+    return 0;  
+}  
+
+
+5. Write a C program to construct a binary Tree making the very first node as root node. and then
+check if the given binary tree is symmetric binary tree or not.
+
+Input Format: User need to enter 'n' number of nodes to be created in the binary tree.
+              Then enter the elements and insert into the tree in level wise.
+
+Output Format: Display postorder output first  and in next line print if its symmetric or not.
+
+Constraints: Maximum number of Elements can be upto 20
+
+Test case example:
+------------------
+case=t1
+input=7
+5 4 4 3 2 2 3
+output=
+postorder display of the Binary Tree is:
+3->2->4->2->3->4->5->
+Symmetric Binary Tree
+
+case=t2
+input=7
+5 4 4 2 3 2 3
+output=
+postorder display of the Binary Tree is:
+2->3->4->2->3->4->5->
+Not a symmetric Binary Tree
+
+case=t3
+input=6
+2 4 5 2 3 3 
+output=
+postorder display of the Binary Tree is:
+2->3->4->3->5->2->
+Not a symmetric Binary Tree
+
+case=t4
+input=1
+12
+output=
+postorder display of the Binary Tree is:
+12->
+Symmetric Binary Tree
+
+
+PROGRAM:
+--------------------------
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include<stdbool.h>
+
+struct node {
+    
+    int data;
+    struct node *left;
+    struct node *right;
+  
+};
+
+  
+    struct node* root = NULL;
+    
+
+struct node* createnode(int data)
+{
+    struct node* node = (struct node*)malloc(sizeof(struct node));
+    node->data = data;
+    node->left = NULL;
+    node->right = NULL;
+    return node;
+}
+
+void insertlevelwise(struct node* root, int data)
+{
+    if (root == NULL)
+        return;
+
+    struct node* queue[20];
+    int f = -1, r = -1;
+
+    queue[++r] = root;
+
+    while (f != r)
+    {
+        struct node* temp = queue[++f];
+
+        if (temp->left == NULL)
+        {
+            temp->left = createnode(data);
+            break;
+        } 
+        else
+            queue[++r] = temp->left;
+
+        if (temp->right == NULL)
+        {
+            temp->right = createnode(data);
+            break;
+        } 
+        else 
+            queue[++r] = temp->right;
+    }
+}
+
+bool isMirror(struct node* root1, struct node* root2)
+{
+    if (root1 == NULL && root2 == NULL)
+        return true;
+ 
+    if (root1 && root2 && root1->data == root2->data)
+        return isMirror(root1->left, root2->right) && isMirror(root1->right, root2->left);
+ 
+    return false;
+}
+ 
+bool isSymmetric(struct node* root)
+{
+    return isMirror(root, root);
+}
+
+void display(struct node *root) 
+{
+    if (root == NULL)
+        return;
+    display(root->left);
+    display(root->right);
+    printf("%d->", root->data);
+}
+int main()
+{
+    
+      int n;
+   // printf("Enter the number of elements: ");
+    scanf("%d", &n);
+    int data;
+
+   // printf("Enter the first node value: ");
+    scanf("%d", &data);
+
+    root = createnode(data);
+
+    int i;
+    for (i = 1; i<n; i++) 
+    {
+        scanf("%d", &data);
+        insertlevelwise(root, data);
+    }
+     printf("postorder display of the Binary Tree is:\n");
+      display(root);
+      
+    if (isSymmetric(root))
+        printf("\nSymmetric Binary Tree\n");
+    else
+        printf("\nNot a symmetric Binary Tree\n");
+
+    return 0;
+}
+
+
+6.  Write a C program to create undirected graph and check number of provinces in the graph.
+
+Input Format: User need to enter 'n' number of vertices to be created in the graph.
+              Then enter the edges of the graph for each vertex to other vertex.
+
+Output Format:Display the total number of provinces.
+
+Constraints: note vertex number starts from 1.
+
+Test case example:
+------------------
+case = t1
+input=5
+0 1 1 1 0     
+1 0 0 0 1                           
+1 0 0 0 1
+1 0 0 0 1
+0 1 1 1 0
+1
+output=
+1 2 5 3 4
+
+case = t2
+input = 3
+0 1 1 
+0 0 0 
+0 1 0
+1
+output=
+1 2 3 
+
+case = t3
+input=4
+0 1 1 0                                                                         
+0 0 1 0                                                                         
+1 0 0 1                                                                         
+0 0 0 1
+1
+output=
+1 2 3 4
+
+case = t4
+input = 4
+0 1 1 0
+0 0 1 0
+1 0 0 1
+0 0 0 1
+2
+output=
+2 3 1 4
+
+PROGRAM:
+-------------------------
+#include<stdio.h>
+void DFS(int);
+int G[10][10],visited[10],n,s;    //n is no of vertices and graph is sorted in array G[10][10]
+
+void main()
+{
+    int i,j;
+    //printf("Enter number of vertices:");
+
+    scanf("%d",&n);
+
+    //read the adjecency matrix
+   // printf("\nEnter adjecency matrix of the graph:");
+
+    for(i=1;i<=n;i++)
+       for(j=1;j<=n;j++)
+            scanf("%d",&G[i][j]);
+
+   for(i=1;i<=n;i++)
+        visited[i]=0;
+//printf("\nENTER THE SOURCE VERTEX :");
+scanf("%d",&s);
+    DFS(s);
+}
+
+void DFS(int i)
+{
+    int j;
+    printf("%d ",i);
+    visited[i]=1;
+
+    for(j=1;j<=n;j++)
+       if((visited[j]==0)&&G[i][j]==1)
+            DFS(j);
+}
+
+
+7.  Write a C program to create undirected graph and check number of provinces in the graph.
+
+Input Format: User need to enter 'n' number of vertices to be created in the graph.
+              Then enter the edges of the graph for each vertex to other vertex.
+
+Output Format:Display the total number of provinces.
+
+Constraints: note vertex number starts from 1.
+
+Test case example:
+------------------
+case=t1
+input=3
+1 0 1
+0 1 0
+1 0 1
+output=
+Number of provinces: 2
+
+case=t2
+input=
+3
+0 0 0
+0 0 0
+0 0 0
+output=
+Number of provinces: 3
+
+case=t3
+input=
+3
+1 0 0
+0 1 0
+0 0 1
+output=
+Number of provinces: 3
+
+case=t4
+input=3
+0 1 1
+1 0 1
+1 1 0
+output=
+Number of provinces: 1
+
+PROGRAM:
+-------------------
+#include <stdio.h>
+
+
+void dfs(int node, int V, int adj[][V], int visited[]) {
+    visited[node] = 1;
+    for (int neighbor = 0; neighbor < V; ++neighbor) {
+        if (adj[node][neighbor] == 1 && !visited[neighbor]) {
+            dfs(neighbor, V, adj, visited);
+        }
+    }
+}
+
+int numProvinces(int V, int adj[][V]) {
+    int visited[V];
+    for (int i = 0; i < V; ++i) {
+        visited[i] = 0;
+    }
+
+    int provinces = 0;
+    for (int node = 0; node < V; ++node) {
+        if (!visited[node]) {
+            dfs(node, V, adj, visited);
+            provinces++;
+        }
+    }
+
+    return provinces;
+}
+
+int main() {
+    int v;
+    //printf("Enter the maximum number of vertices: ");
+    scanf("%d", &v);
+
+    int adj_matrix[v][v];
+    printf("Enter the adjacency matrix:\n");
+    for (int i = 0; i < v; ++i) {
+        for (int j = 0; j <v; ++j) {
+            scanf("%d", &adj_matrix[i][j]);
+        }
+    }
+
+    int result = numProvinces(v, adj_matrix);
+    printf("Number of provinces: %d\n", result);
+
+    return 0;
+}
+
+
+8. Write a C program to detect if there is cycle in the given undirected graph.
+
+Input Format: User need to enter 'n' number of vertices to be created in the graph.
+              Then enter the edges of the graph for each vertex to other vertex.
+
+Output Format:Display cycle present or not in the graph.
+
+Constraints: note vertex number starts from 1.
+
+Test case example:
+------------------
+case=t1
+input=4
+0 1 0 0
+1 0 1 1
+0 1 0 1
+0 1 1 0
+output=Graph contains a cycle
+
+case=t2
+input=4
+0 1 1 0
+1 0 1 0
+1 1 0 1
+0 0 1 0
+output=
+Graph contains a cycle
+
+case=t3
+input=3
+0 1 1
+1 0 0
+1 0 0
+output=
+Graph doesn't contain a cycle
+
+case=t4
+input=4
+0 1 1 0
+1 0 1 1
+1 1 0 0
+0 1 0 0
+output=
+graph contains a cycle
+
+case=t5
+input=4
+0 1 1 0
+1 0 0 1
+1 0 0 1
+0 1 1 0
+output=
+graph contains a cycle
+
+case=t6
+input=4
+0 1 0 0
+1 0 1 1
+0 1 0 0
+0 1 0 0
+output=
+graph doesn't contain a cycle
+
+PROGRAM:
+--------------------------------
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_VERTICES 5
+
+int graph[MAX_VERTICES][MAX_VERTICES];
+int visited[MAX_VERTICES];
+int vertices;
+
+bool hasCycle(int current, int parent)
+{
+    visited[current] = 1;
+
+    for (int i = 0; i < vertices; i++)
+    {
+        if (graph[current][i])
+        {
+            if (!visited[i])
+            {
+                if (hasCycle(i, current)) 
+                {
+                    return true;
+                }
+            } else if (i != parent) 
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool detectCycle()
+{
+    for (int i = 0; i < vertices; i++)
+    {
+        visited[i] = 0;
+    }
+
+    for (int i = 0; i < vertices; i++) 
+    {
+        if (!visited[i]) 
+        {
+            if (hasCycle(i, -1)) 
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+int main() 
+{
+
+    scanf("%d", &vertices);
+
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            scanf("%d", &graph[i][j]);
+        }
+    }
+
+    if (detectCycle()) 
+    {
+        printf("graph contains a cycle.");
+    }
+    else 
+    {
+        printf("graph doesn't contain a cycle.");
+    }
+
+    return 0;
+}
+
+9. 
+Write a C Program to find the minimum spanning tree of the given graph using Prims algorihtm. 
+Prim’s algorithm is a greedy algorithm that finds a minimum spanning tree for a connected weighted undirected graph.
+It finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized.
+
+Test case example:
+------------------
+case=t1
+input=5
+0 2 0 6 0
+2 0 3 8 5
+0 3 0 0 7
+6 8 0 0 9
+0 5 7 9 0
+output=
+Edge 	Weight
+0 - 1 	2 
+1 - 2 	3 
+0 - 3 	6 
+1 - 4 	5 
+Total cost of MST: 16
+
+case=t2
+input=5
+0 9 75 0 0
+9 0 95 19 42
+75 95 0 51 66
+0 19 51 0 31
+0 42 66 31 0
+
+output=
+Edge 	Weight
+0 - 1 	9
+3 - 2 	51
+1 - 3 	19
+3 - 4 	31
+Total cost of MST: 110
+
+case=t3
+input=
+5
+0 2 0 3 0
+2 0 3 4 8
+0 3 0 0 7
+3 4 0 0 7
+0 8 7 7 0
+output=
+Edge 	Weight
+0 - 1 	2 
+1 - 2 	3 
+0 - 3 	3 
+2 - 4 	7 
+Total Cost of MST: 15
+
+
+PROGRAM:
+-------------------
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+ 
+
+#define V 5
+ 
+
+int minKey(int key[], bool mstSet[])
+{
+   
+    int min = INT_MAX, min_index;
+ 
+    for (int v = 0; v < V; v++)
+        if (mstSet[v] == false && key[v] < min)
+            min = key[v], min_index = v;
+ 
+    return min_index;
+}
+ 
+
+int printMST(int parent[], int graph[V][V]) 
+{
+    int cost = 0;
+    printf("Edge \tWeight\n");
+    for (int i = 1; i < V; i++) {
+        printf("%d - %d \t%d \n", parent[i], i,  graph[i][parent[i]]);
+        cost += graph[i][parent[i]];
+    }
+    printf("Total Cost of MST: %d\n", cost);
+}
+
+void primMST(int graph[V][V])
+{
+    
+    int parent[V];
+    int key[V];
+    bool mstSet[V];
+ 
+    for (int i = 0; i < V; i++)
+    {
+        key[i] = INT_MAX;
+        mstSet[i] = false;
+    }
+ 
+    key[0] = 0;
+    parent[0] = -1;
+ 
+    for (int count = 0; count < V - 1; count++) 
+    {
+        int u = minKey(key, mstSet);
+        mstSet[u] = true;
+        for (int v = 0; v < V; v++)
+ 
+            if (graph[u][v] && mstSet[v] == false && graph[u][v] < key[v])
+            {
+                parent[v] = u;
+                key[v] = graph[u][v];
+            }
+    }
+
+    printMST(parent, graph);
+}
+ 
+int main()
+{
+    int v;
+    scanf("%d",&v);
+    int graph[v][v];
+    for(int i=0;i<v;i++)
+    {
+        for(int j=0;j<v;j++)
+        {
+            scanf("%d",&graph[i][j]);
+        }
+    }
+    primMST(graph);
+ 
+    return 0;
+}
+
+
+10. Write a C program to transitive closure of a given directed graph.
+
+The reachability factor is used to create a transitive closure matrix for all (i,j) pairs in a graph. 
+If j is reachable from I (i.e., there is a path connecting I and j), we can set the matrix element to 1; 
+otherwise, if there is no connection, we can set it to 0.
+
+TEST CASES:
+------------------
+case=t1
+input=
+1 1 0 1
+0 1 1 0
+0 0 1 1
+0 0 0 1
+output=
+1 1 1 1 
+0 1 1 1 
+0 0 1 1 
+0 0 0 1 
+
+case=t2
+input=
+1 1 1 0
+0 0 1 0
+1 0 0 1
+0 0 0 1
+output=
+1 1 1 1
+1 1 1 1
+1 1 1 1
+0 0 0 1
+
+case=t3
+input=
+1 0 0 0
+1 1 1 1
+1 0 1 1
+0 0 0 0
+output=
+1 0 0 0
+1 1 1 1
+1 0 1 1
+0 0 0 1
+
+case=t4
+input=
+1 0 0 0
+1 1 0 1
+1 0 1 1
+0 0 1 0
+output=
+1 0 0 0
+1 1 1 1
+1 0 1 1
+1 0 1 1
+
+PROGRAM:
+--------------------
+#include<stdio.h>
+ 
+#define V 4
+ 
+void print(int reach[][V]);
+void transitiveClosure(int graph[][V])
+{
+   
+    int reach[V][V], i, j, k;
+ 
+    for (i = 0; i < V; i++)
+        for (j = 0; j < V; j++)
+            reach[i][j] = graph[i][j];
+ 
+    
+    for (k = 0; k < V; k++)
+    {
+        for (i = 0; i < V; i++)
+        {
+            for (j = 0; j < V; j++)
+            {
+                reach[i][j] = reach[i][j] ||  (reach[i][k] && reach[k][j]);
+            }
+        }
+    }
+    print(reach);
+}
+
+void print(int reach[][V])
+{
+    for (int i = 0; i < V; i++)
+    {
+        for (int j = 0; j < V; j++)
+        {
+              if(i == j)
+                printf("1 ");
+              else
+                printf ("%d ", reach[i][j]);
+        }
+        printf("\n");
+    }
+}
+ 
+int main()
+{
+   int graph[V][V];
+ for(int i=0;i<V;i++)
+ {
+     for(int j=0;j<V;j++)
+     {
+         scanf("%d",&graph[i][j]);
+     }
+ }
+    transitiveClosure(graph);
+    return 0;
+}
 
